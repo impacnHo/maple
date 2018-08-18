@@ -7,7 +7,7 @@
         </v-carousel>
       </v-card>
     </v-flex>
-    <v-flex v-for="(item, index) in bannerList" :key="index" xs6>
+    <v-flex v-for="(item, index) in bannerList" :key="index" lg6 md4 sm12>
       <v-parallax :src="item.src">
         <v-layout align-center column justify-center>
           <h1 class="slogen">{{item.slogen}}</h1>
@@ -15,7 +15,7 @@
         </v-layout>
       </v-parallax>
     </v-flex>
-    <v-flex v-for="(item, index) in subBannerList" :key="index" xs4>
+    <v-flex v-for="(item, index) in subBannerList" :key="index" lg4 md4 sm12>
       <v-parallax :src="item.src">
         <v-layout align-center column justify-center>
           <h1 class="slogen">{{item.slogen}}</h1>
