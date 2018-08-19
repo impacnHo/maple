@@ -1,45 +1,67 @@
 <template>
   <v-layout row wrap justify-center align-center>
-    <v-flex xs12>
-      <v-card>
-        <v-carousel>
-          <v-carousel-item v-for="(item, index) in carouselList" :key="index" :src="item"></v-carousel-item>
-        </v-carousel>
-      </v-card>
-    </v-flex>
-    <v-flex v-for="(item, index) in bannerList" :key="index" lg6 md4 sm12>
-      <v-parallax :src="item.src">
-        <v-layout align-center column justify-center>
-          <h1 class="slogen">{{item.slogen}}</h1>
-          <v-btn outline large color="white" class="btn-content" :to="item.to">选购{{item.type}}</v-btn>
-        </v-layout>
-      </v-parallax>
-    </v-flex>
-    <v-flex v-for="(item, index) in subBannerList" :key="index" lg4 md4 sm12>
-      <v-parallax :src="item.src">
-        <v-layout align-center column justify-center>
-          <h1 class="slogen">{{item.slogen}}</h1>
-          <v-btn outline large color="white" class="btn-content" :to="item.to">选购{{item.type}}</v-btn>
-        </v-layout>
-      </v-parallax>
-    </v-flex>
+    <!-- 跑马灯 -->
+    <v-carousel>
+      <v-carousel-item v-for="item in carouselList" :key="item.index" :src="item.src"></v-carousel-item>
+    </v-carousel>
+    <!-- 海报 -->
+    <v-banner v-for="item in bannerList" :key="item.index" v-bind="item"></v-banner>
+    <!-- 副海报 -->
+    <v-sub-banner v-for="item in subBannerList" :key="item.index" v-bind="item"></v-sub-banner>
   </v-layout>
 </template>
 
 <script>
+  import vBanner from './common/v-banner'
+  import vSubBanner from './common/v-subBanner'
+
   export default {
     name: "Index",
+    components: {vBanner, vSubBanner},
     data() {
       return {
-        carouselList: ['http://pbw790ert.bkt.clouddn.com/banner2.jpg', 'http://pbw790ert.bkt.clouddn.com/banner3.jpg'],
+        carouselList: [
+          {index: 1, src: 'http://pbw790ert.bkt.clouddn.com/banner2.jpg'},
+          {index: 2, src: 'http://pbw790ert.bkt.clouddn.com/banner3.jpg'}
+        ],
         bannerList: [
-          {src: 'http://pbw790ert.bkt.clouddn.com/subBanner2.jpg', flex: '6', slogen: 'YEEZY SEANSON 2018', type: '鞋履', to:'sneaker'},
-          {src: 'http://pbw790ert.bkt.clouddn.com/subBanner.jpg', flex: '6', slogen: '人类制造 2018春夏系列', type: '服装', to:'clothes'}
+          {
+            index: 3,
+            poster: 'http://pbw790ert.bkt.clouddn.com/subBanner2.jpg',
+            slogen: 'YEEZY SEANSON 2018',
+            type: '鞋履',
+            to: 'sneaker'
+          },
+          {
+            index: 4,
+            poster: 'http://pbw790ert.bkt.clouddn.com/subBanner.jpg',
+            slogen: '人类制造 2018春夏系列',
+            type: '服装',
+            to: 'clothes'
+          }
         ],
         subBannerList: [
-          {src: 'http://pbw790ert.bkt.clouddn.com/subBanner4.jpg', flex: '4', slogen: 'Off White × RIMOWA', type: '箱包', to: 'bag'},
-          {src: 'http://pbw790ert.bkt.clouddn.com/subBanner5.jpg', flex: '4', slogen: 'CASIO', type: '配饰', to:'accessories'},
-          {src: 'http://pbw790ert.bkt.clouddn.com/subBanner6.jpg', flex: '4', slogen: '童年玩物系列', type: '生活小物', to:'life'}
+          {
+            index: 5,
+            poster: 'http://pbw790ert.bkt.clouddn.com/subBanner4.jpg',
+            slogen: 'Off White × RIMOWA',
+            type: '箱包',
+            to: 'bag'
+          },
+          {
+            index: 6,
+            poster: 'http://pbw790ert.bkt.clouddn.com/subBanner5.jpg',
+            slogen: 'CASIO',
+            type: '配饰',
+            to: 'accessories'
+          },
+          {
+            index: 7,
+            poster: 'http://pbw790ert.bkt.clouddn.com/subBanner6.jpg',
+            slogen: '童年玩物系列',
+            type: '生活小物',
+            to: 'life'
+          }
         ]
       }
     }
@@ -47,10 +69,6 @@
 </script>
 
 <style scoped>
-  .slogen{
-    text-align: center;
-    font-family: "Times New Roman";
-    font-weight: inherit;
-  }
+
 
 </style>
