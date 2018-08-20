@@ -5,7 +5,7 @@
     <!-- 顶部导航栏 -->
     <v-header></v-header>
     <!-- 中间内容 -->
-    <v-content>
+    <v-content class="bg">
       <v-container grid-list-xl fluid>
         <router-view></router-view>
       </v-container>
@@ -27,5 +27,7 @@
 </script>
 
 <style scoped>
-
+  .bg{
+    background-color: whitesmoke;
+  }
 </style>

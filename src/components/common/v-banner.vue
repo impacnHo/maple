@@ -2,7 +2,7 @@
   <v-flex lg6 md4 sm12>
     <v-parallax :src="this.poster">
       <v-layout align-center column justify-center>
-        <h1 class="slogen">{{this.slogen}}</h1>
+        <h1 class="slogen hidden-sm-and-down">{{this.slogen}}</h1>
         <v-btn outline large color="white" class="btn-content" :to="this.to">选购{{this.type}}</v-btn>
       </v-layout>
     </v-parallax>

@@ -3,13 +3,17 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import axios from 'axios'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 import Maple from './components/maple-main'
 
+axios.defaults.baseURL = 'http://119.23.30.235:8080/maple-server'
+axios.defaults.withCredentials = true
+// 将api方法绑定全局
+Vue.prototype.$axios = axios
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 
@@ -17,6 +21,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  components: { Maple },
+  components: {Maple},
   template: '<Maple/>'
 })
