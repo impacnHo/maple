@@ -19,38 +19,48 @@
         list: []
       }
     },
-    created: function () {
-      let me = this;
-      let typeName = this.$route.params.typeName;
-      let api = '/product';
-      switch (typeName) {
-        case 'sneaker':
-          api += '/鞋履';
-          break;
-        case 'clothes':
-          api += '/服装';
-          break;
-        case 'accessories':
-          api += '/配饰';
-          break;
-        case 'bag':
-          api += '/箱包';
-          break;
-        case 'glasses':
-          api += '/眼镜';
-          break;
-        case 'life':
-          api += '/生活';
-          break;
-        default:
-          api = '/product';
+    methods: {
+      getData() {
+        let me = this;
+        let typeName = this.$route.params.typeName;
+        let api = '/product';
+        switch (typeName) {
+          case 'sneaker':
+            api += '/鞋履';
+            break;
+          case 'clothes':
+            api += '/服装';
+            break;
+          case 'accessories':
+            api += '/配饰';
+            break;
+          case 'bag':
+            api += '/箱包';
+            break;
+          case 'glasses':
+            api += '/眼镜';
+            break;
+          case 'life':
+            api += '/生活';
+            break;
+          default:
+            api = '/product';
+        }
+        console.log('api: ' + api);
+        this.$axios.get(api, {
+          page: 1
+        }).then(function (response) {
+          me.list = response.data.data;
+        })
       }
-      console.log('api: ' + api);
-      this.$axios.get(api, {
-        page: 1
-      }).then(function (response) {
-        me.list = response.data.data;
-      })
+    },
+    watch: {
+      '$route'(to, from) {
+        this.getData(this.$route.params.typeName)
+      }
+    },
+    created() {
+      this.getData();
     }
   }
 </script>
