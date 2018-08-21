@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-product-card v-for="item in list" :key="item.productNum" v-bind="item"></v-product-card>
     </v-layout>
-    <v-pager></v-pager>
+    <v-pager :total="totalPages"></v-pager>
   </v-container>
 </template>
 
@@ -16,47 +16,39 @@
     components: {vProductCard, vPager},
     data() {
       return {
-        list: []
+        // 浏览方式api、数据列表、当前页数、总页数
+        api: '/product',
+        list: [],
+        currentPage: 1,
+        totalPages: 1
       }
     },
     methods: {
       getData() {
         let me = this;
+        // 获取路由中的typeName和page值
         let typeName = this.$route.params.typeName;
-        let api = '/product';
-        switch (typeName) {
-          case 'sneaker':
-            api += '/鞋履';
-            break;
-          case 'clothes':
-            api += '/服装';
-            break;
-          case 'accessories':
-            api += '/配饰';
-            break;
-          case 'bag':
-            api += '/箱包';
-            break;
-          case 'glasses':
-            api += '/眼镜';
-            break;
-          case 'life':
-            api += '/生活';
-            break;
-          default:
-            api = '/product';
-        }
-        console.log('api: ' + api);
-        this.$axios.get(api, {
-          page: 1
+        let targetPage = this.$route.query.page === undefined ? 1 : this.$route.query.page;
+        console.log('xxx: ' + targetPage);
+        if ('all' !== typeName)
+          this.api = this.api + '/' + typeName;
+        // 向api发送get请求
+        this.$axios.get(this.api, {
+          params: {
+            page: targetPage
+          }
         }).then(function (response) {
           me.list = response.data.data;
+          me.api = '/product';
+          console.log('typeL ' + typeof  targetPage);
+          me.currentPage = targetPage;
+          me.totalPages = response.data.message;
         })
       }
     },
     watch: {
       '$route'(to, from) {
-        this.getData(this.$route.params.typeName)
+        this.getData()
       }
     },
     created() {

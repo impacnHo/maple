@@ -24,7 +24,7 @@
           {name: '所有', src: 'all'},
           {name: '鞋履', src: 'sneaker'},
           {name: '服装', src: 'clothes'},
-          {name: '配饰', src: 'accessories'},
+          {name: '配饰', src: 'accessory'},
           {name: '箱包', src: 'bag'},
           {name: '眼镜', src: 'glasses'},
           {name: '生活', src: 'life'}
@@ -33,7 +33,7 @@
     },
     methods: {
       view(url) {
-        this.$router.push({path: url})
+        this.$router.push({path: url, query: {page: 1}})
       }
     },
     mounted() {
@@ -46,7 +46,5 @@
 </script>
 
 <style scoped>
-  a {
-    text-decoration: none;
-  }
+
 </style>
