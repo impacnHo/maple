@@ -10,7 +10,7 @@
     <v-spacer></v-spacer>
     <v-flex>
       <v-form>
-        <v-text-field class="mt-4" v-model="keyword" color="white" label="搜索商品" prepend-icon="search" clearable></v-text-field>
+        <v-text-field @keyup.enter="search" class="mt-4" v-model="keyword" color="white" label="搜索商品" prepend-icon="search" clearable></v-text-field>
       </v-form>
     </v-flex>
     <v-spacer></v-spacer>
@@ -35,6 +35,9 @@
     methods: {
       toggle() {
         Bus.$emit('toggle-sidebar');
+      },
+      search() {
+
       }
     }
   }

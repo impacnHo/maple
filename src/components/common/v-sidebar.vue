@@ -3,7 +3,7 @@
     <v-subheader>商品分类</v-subheader>
     <v-divider></v-divider>
     <v-list dense>
-      <v-list-tile v-for="(item,index) in productTypeList" :key="index" @click="view(item.src)">
+      <v-list-tile v-for="(item,index) in productTypeList" :key="index" @click="view(item.typeName)">
         <v-list-tile-content>
           <v-list-tile-title>{{item.name}}</v-list-tile-title>
         </v-list-tile-content>
@@ -21,19 +21,19 @@
       return {
         drawer: false,
         productTypeList: [
-          {name: '所有', src: 'all'},
-          {name: '鞋履', src: 'sneaker'},
-          {name: '服装', src: 'clothes'},
-          {name: '配饰', src: 'accessory'},
-          {name: '箱包', src: 'bag'},
-          {name: '眼镜', src: 'glasses'},
-          {name: '生活', src: 'life'}
+          {name: '所有', typeName: 'all'},
+          {name: '鞋履', typeName: 'sneaker'},
+          {name: '服装', typeName: 'clothes'},
+          {name: '配饰', typeName: 'accessory'},
+          {name: '箱包', typeName: 'bag'},
+          {name: '眼镜', typeName: 'glasses'},
+          {name: '生活', typeName: 'life'}
         ]
       }
     },
     methods: {
-      view(url) {
-        this.$router.push({path: url, query: {page: 1}})
+      view(typeName) {
+        this.$router.push({path: typeName})
       }
     },
     mounted() {

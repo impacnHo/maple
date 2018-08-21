@@ -1,7 +1,7 @@
 <template>
   <div class="text-xs-center">
     <v-card class="bg" flat>
-      <v-card-text @click="view">
+      <v-card-text @click="view()">
         <v-pagination v-model="page" :length="total"></v-pagination>
       </v-card-text>
     </v-card>
@@ -11,7 +11,7 @@
 <script>
   export default {
     name: "v-pager",
-    props: ['total', 'typeName'],
+    props: ['total', 'current'],
     data() {
       return {
         page: 1
@@ -19,13 +19,13 @@
     },
     methods: {
       view() {
-        let api = '/product';
-        this.$router.push({path: this.api, query: {page: this.page}});
+        this.$emit('goPage', this.page);
       }
     },
     watch: {
-      '$route'(to,from) {
-        this.page = to.query.page;
+      // 统一父组件传入参数与data
+      current: function () {
+        this.page = this.current;
       }
     }
   }

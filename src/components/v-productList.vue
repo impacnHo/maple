@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-product-card v-for="item in list" :key="item.productNum" v-bind="item"></v-product-card>
     </v-layout>
-    <v-pager :total="totalPages"></v-pager>
+    <v-pager :total="totalPages" :current="currentPage" @goPage="goPage"></v-pager>
   </v-container>
 </template>
 
@@ -24,35 +24,43 @@
       }
     },
     methods: {
-      getData() {
+      getData(pageIndex) {
         let me = this;
-        // 获取路由中的typeName和page值
+        // 高亮当前请求页数
+        this.currentPage = pageIndex;
+        // 获取路由中的typeName
         let typeName = this.$route.params.typeName;
-        let targetPage = this.$route.query.page === undefined ? 1 : this.$route.query.page;
-        console.log('xxx: ' + targetPage);
-        if ('all' !== typeName)
+        let page = pageIndex;
+
+        if ('all' !== typeName) {
           this.api = this.api + '/' + typeName;
-        // 向api发送get请求
+        }
+
         this.$axios.get(this.api, {
           params: {
-            page: targetPage
+            page: page
           }
         }).then(function (response) {
           me.list = response.data.data;
-          me.api = '/product';
-          console.log('typeL ' + typeof  targetPage);
-          me.currentPage = targetPage;
+          me.currentPage = page;
           me.totalPages = response.data.message;
+          // 还原api，避免参数叠加
+          me.api = '/product';
         })
+      },
+      goPage(index) {
+        this.getData(index);
       }
     },
     watch: {
+      // 路由变化时，初始当前页为1
       '$route'(to, from) {
-        this.getData()
+        this.getData(1);
       }
     },
     created() {
-      this.getData();
+      // 构建时执行getData获取商品列表，初始当前页页为1
+      this.getData(1);
     }
   }
 </script>
