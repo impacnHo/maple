@@ -9,9 +9,8 @@
     <v-toolbar-title class="hidden-sm-and-down">Trophy Room</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-flex>
-      <v-form>
-        <v-text-field @keyup.enter="search" class="mt-4" v-model="keyword" color="white" label="搜索商品" prepend-icon="search" clearable></v-text-field>
-      </v-form>
+      <v-text-field @keyup.enter="search" class="mt-4" v-model="keyword" color="white" label="搜索商品"
+                    prepend-icon="search" clearable></v-text-field>
     </v-flex>
     <v-spacer></v-spacer>
     <v-toolbar-items>
@@ -37,8 +36,19 @@
         Bus.$emit('toggle-sidebar');
       },
       search() {
-
+        this.$router.push({
+          path: 'search',
+          query: {
+            keyword: this.keyword
+          }
+        })
       }
+    },
+    mounted() {
+      let me = this;
+      Bus.$on('clear-keyword',function () {
+        me.keyword = '';
+      })
     }
   }
 </script>

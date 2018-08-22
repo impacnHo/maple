@@ -26,24 +26,6 @@
       poster() {
         return 'http://pbw790ert.bkt.clouddn.com/product/' + this.productNum + ".jpg"
       }
-      // formatPrice() {
-      //   let result;
-      //   let before = this.price.toString();
-      //   let after = [];
-      //   if (before.length > 3) {
-      //     let words = before.split('');
-      //     let counter = 0;
-      //     for (let i = words.length - 1; i >= 0; i--) {
-      //       counter++;
-      //       after.unshift(words[i]);
-      //       if (!(counter % 3) && i != 0) {
-      //         after.unshift(',')
-      //       }
-      //       result += after[i]
-      //     }
-      //   }
-      //   return result;
-      // }
     }
   }
 </script>
@@ -80,7 +62,7 @@
     }
 
     h4 {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
   }
 

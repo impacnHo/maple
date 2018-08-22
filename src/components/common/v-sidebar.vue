@@ -33,7 +33,8 @@
     },
     methods: {
       view(typeName) {
-        this.$router.push({path: typeName})
+        Bus.$emit('clear-keyword');
+        this.$router.push({path: typeName});
       }
     },
     mounted() {
