@@ -19,13 +19,13 @@
     },
     methods: {
       view() {
-        this.$emit('goPage', this.page);
+        this.$emit('goPage', this.page)
       }
     },
     watch: {
       // 统一父组件传入参数与data
       current: function () {
-        this.page = this.current;
+        this.page = this.current
       }
     }
   }

@@ -47,7 +47,7 @@
     mounted() {
       let me = this;
       Bus.$on('clear-keyword',function () {
-        me.keyword = '';
+        me.keyword = ''
       })
     }
   }

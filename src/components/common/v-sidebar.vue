@@ -34,13 +34,13 @@
     methods: {
       view(typeName) {
         Bus.$emit('clear-keyword');
-        this.$router.push({path: typeName});
+        this.$router.push({path: typeName})
       }
     },
     mounted() {
       let me = this;
       Bus.$on('toggle-sidebar', function () {
-        me.drawer = !me.drawer;
+        me.drawer = !me.drawer
       })
     }
   }

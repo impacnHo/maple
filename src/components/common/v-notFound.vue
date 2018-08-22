@@ -8,9 +8,11 @@
             抱歉，关于您输入的关键字，我们暂时查找不到对应的数据，请搜寻其他关键字或浏览商品分类。
           </span>
           <v-divider class="my-3"></v-divider>
-          <v-btn class="mx-0" color="primary" large>
-            返回首页
-          </v-btn>
+          <router-link to="/">
+            <v-btn class="mx-0" color="primary" large @click="clearKeyword">
+              返回首页
+            </v-btn>
+          </router-link>
         </v-flex>
       </v-layout>
     </v-container>
@@ -18,11 +20,16 @@
 </template>
 
 <script>
+  import Bus from '../bus'
   export default {
     name: "v-notFound",
+    components:{Bus},
     methods: {
       goHome() {
-        this.$router.push('/');
+        this.$router.push('/')
+      },
+      clearKeyword() {
+        Bus.$emit('clear-keyword')
       }
     }
   }

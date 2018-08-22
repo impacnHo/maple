@@ -1,6 +1,15 @@
-# maple
+# maple-vue
+[![Vue Version](https://img.shields.io/badge/Vue-2.5.2-brightgreen.svg)](https://vuejs.org/)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![Vuetify Version](https://img.shields.io/badge/Vuetify-1.1.13-brightgreen.svg)](https://vuetifyjs.com/zh-Hans/)
+[![Material Icons Version](https://img.shields.io/badge/Material%20Icons-3.0.3-brightgreen.svg)](https://material.io/)
+[![Author](https://img.shields.io/badge/Author-GorillA-%234c66a3.svg)](https://github.com/impacnHo)
+> This is a project of e-mall bases on Vue+Vuetify which call the api of [**maple-server**](https://github.com/impacnHo/maple-server) to work
 
-> A Vue.js project
+> Click the link to preview: [http://alistar.xyz:8080/maple/#/](http://alistar.xyz:8080/maple/#/)
+
+## Log
+> Aug 22, 2018 - Browse products(view all, view by type, search) √
 
 ## Build Setup
 

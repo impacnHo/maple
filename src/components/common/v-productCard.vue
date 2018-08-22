@@ -19,7 +19,7 @@
     props: ['productNum', 'name', 'subName', 'price'],
     methods: {
       getProduct(productNum) {
-        alert(productNum);
+        alert(productNum)
       }
     },
     computed: {

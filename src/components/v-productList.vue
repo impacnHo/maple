@@ -30,21 +30,21 @@
     },
     methods: {
       getData(pageIndex) {
-        let me = this;
-        this.hasData = true;
+        let me = this
+        this.hasData = true
         // 高亮当前请求页数
-        this.currentPage = pageIndex;
+        this.currentPage = pageIndex
         // 获取路由中的typeName
-        let typeName = this.$route.params.typeName;
-        let page = pageIndex;
-        let keyword = this.$route.query.keyword;
+        let typeName = this.$route.params.typeName
+        let page = pageIndex
+        let keyword = this.$route.query.keyword
 
         // 判断是搜索还是浏览
         if (keyword !== undefined && 'search' === typeName) {
-          this.api = 'search?keyword=' + keyword;
+          this.api = 'search?keyword=' + keyword
         } else {
           if ('all' !== typeName) {
-            this.api = this.api + '/' + typeName;
+            this.api = this.api + '/' + typeName
           }
         }
 
@@ -55,29 +55,29 @@
           }
         }).then(function (response) {
           if (response.data.data.length > 0) {
-            me.list = response.data.data;
+            me.list = response.data.data
           } else {
-            me.hasData = false;
+            me.hasData = false
           }
-          me.currentPage = page;
-          me.totalPages = response.data.message;
+          me.currentPage = page
+          me.totalPages = response.data.message
           // 还原api，避免参数叠加
-          me.api = '/product';
+          me.api = '/product'
         })
       },
       goPage(index) {
-        this.getData(index);
+        this.getData(index)
       }
     },
     watch: {
       // 路由变化时，初始当前页为1
       '$route'(to, from) {
-        this.getData(1);
+        this.getData(1)
       }
     },
     created() {
       // 构建时执行getData获取商品列表，初始当前页页为1
-      this.getData(1);
+      this.getData(1)
     }
   }
 </script>
