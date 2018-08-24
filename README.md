@@ -10,6 +10,7 @@
 
 ## Log
 > Aug 22, 2018 - Browse products(view all, view by type, search) √
+> Aug 24, 2018 - View product details and base register function √
 
 ## Build Setup
 
