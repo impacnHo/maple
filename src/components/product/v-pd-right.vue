@@ -5,7 +5,7 @@
         <h4>其他</h4>
         <hr>
       </div>
-      <v-expansion-panel class="mt-3" popout>
+      <v-expansion-panel class="mt-4" popout>
         <v-expansion-panel-content>
           <div slot="header">尺码对照</div>
           <v-size-table></v-size-table>
@@ -29,7 +29,7 @@
   import vContact from './v-contact'
 
   export default {
-    name: "v-rule",
+    name: "v-pd-right",
     components: {vSizeTable, vRules, vContact},
     data() {
       return {

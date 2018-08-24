@@ -13,7 +13,7 @@
             <v-list-tile-action>
               <v-icon>visibility</v-icon>
             </v-list-tile-action>
-            <v-list-tile-content>品牌：{{this.brand}}</v-list-tile-content>
+            <v-list-tile-content>品牌：{{this.brandName}}</v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-action>
@@ -31,7 +31,7 @@
             <v-list-tile-action>
               <v-icon>date_range</v-icon>
             </v-list-tile-action>
-            <v-list-tile-content>上市日期：{{this.launchDate}}</v-list-tile-content>
+            <v-list-tile-content>上市日期：{{this.formatDate}}</v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -41,8 +41,17 @@
 
 <script>
   export default {
-    name: "v-desc",
-    props: ['brand', 'productNum', 'price', 'launchDate']
+    name: "v-pd-left",
+    props: ['brandName', 'productNum', 'price', 'lanchDate'],
+    computed: {
+      formatDate() {
+        let time = new Date(this.lanchDate)
+        let y = time.getFullYear()
+        let m = time.getMonth()
+        let d = time.getDate()
+        return y + '-' + m + '-' + d;
+      }
+    }
 
   }
 </script>

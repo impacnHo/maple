@@ -19,7 +19,8 @@
     props: ['productNum', 'name', 'subName', 'price'],
     methods: {
       getProduct(productNum) {
-        alert(productNum)
+        let url = 'product/' + productNum;
+        this.$router.push({path: url})
       }
     },
     computed: {

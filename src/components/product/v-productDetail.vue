@@ -2,12 +2,46 @@
   <v-container grod-list-md text-xs-center>
     <v-layout row wrap>
       <v-flex lg12 md12 sm12 xs12>
-        <v-pd-main></v-pd-main>
+        <!--正上部分：左边海报，右边操作板+tips-->
+        <!--<v-pd-main v-bind="itemsForMain"></v-pd-main>-->
+        <v-card>
+          <v-container grid-list-md text-xs-center>
+            <v-layout row wrap>
+              <!--海报-->
+              <v-flex lg6 md6 sm12>
+                <v-card flat>
+                  <img class="card-img-top mb-4" :src="poster" alt="poster">
+                  <ul class="mt-4">
+                    <li>
+                      <span class="mx-2">分享</span>
+                      <span class="mx-2" v-for="(item,index) in share" :key="index">
+                      <v-btn flat icon large><i :class=item></i></v-btn>
+                    </span>
+                    </li>
+                  </ul>
+                </v-card>
+              </v-flex>
+              <!--右-->
+              <v-flex lg6 md6 sm12>
+                <!--操作板-->
+                <v-flex lg16 md12>
+                  <v-operator v-bind="itemsForOprt"></v-operator>
+                </v-flex>
+                <!--tips-->
+                <v-flex lg16 md12>
+                  <v-tips></v-tips>
+                </v-flex>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card>
       </v-flex>
       <v-flex lg6 md6 sm12 xs12>
-        <v-pd-left></v-pd-left>
+        <!--左下部分-->
+        <v-pd-left v-bind="itemsForLeft"></v-pd-left>
       </v-flex>
       <v-flex lg6 md6 sm12 xs12>
+        <!--右下部分-->
         <v-pd-right></v-pd-right>
       </v-flex>
     </v-layout>
@@ -15,26 +49,71 @@
 </template>
 
 <script>
-  import vPdLeft from './product/v-pd-left'
-  import vPdRight from './product/v-pd-right'
-  import vPdMain from './product/v-product'
+  import vPdLeft from './v-pd-left'
+  import vPdRight from './v-pd-right'
+  import vOperator from "./v-operator";
+  import vTips from './v-tips'
 
   export default {
     name: "v-productDetail",
-    components: {vPdLeft, vPdRight, vPdMain},
+    components: {vOperator, vPdLeft, vPdRight, vTips},
     data() {
       return {
-        item: {
-          brand: 'nike',
-          productNum: 'test',
-          price: '$99',
-          launchDate: '2018'
+        share: ['fab fa-facebook-f', 'fab fa-twitter', 'fab fa-instagram', 'fab fa-google-plus-g', 'fab fa-tumblr'],
+        itemsForOprt: {
+          productNum: '',
+          brandName: '',
+          name: '',
+          subName: '',
+          price: '',
+          stocks: [],
+        },
+        itemsForLeft: {
+          brandName: '',
+          productNum: '',
+          price: '',
+          lanchDate: ''
         }
       }
+    },
+    computed: {
+      poster() {
+        let img = 'avatar'
+        if ('' !== this.itemsForOprt.productNum && undefined !== this.itemsForOprt.productNum)
+          img = this.itemsForOprt.productNum
+        return 'http://pbw790ert.bkt.clouddn.com/product/' + img + '.jpg'
+      }
+    },
+    methods: {
+      getData(productNum) {
+        let me = this;
+        let api = '/product/p/' + productNum
+        this.$axios.get(api).then(function (response) {
+          let items = response.data.data
+
+          me.itemsForOprt.productNum = items.productNum
+          me.itemsForOprt.brandName = items.brandName
+          me.itemsForOprt.name = items.name
+          me.itemsForOprt.subName = items.subName
+          me.itemsForOprt.price = items.price
+          me.itemsForOprt.stocks = items.stocks
+
+          me.itemsForLeft.brandName = items.brandName
+          me.itemsForLeft.productNum = items.productNum
+          me.itemsForLeft.price = items.price
+          me.itemsForLeft.lanchDate = items.lanchDate
+        })
+      }
+    },
+    created() {
+      let productNum = this.$route.params.productNum
+      this.getData(productNum)
     }
   }
 </script>
 
 <style scoped>
-
+  ul {
+    list-style-type: none;
+  }
 </style>
