@@ -21,13 +21,13 @@
       return {
         drawer: false,
         productTypeList: [
-          {name: '所有', typeName: 'all'},
-          {name: '鞋履', typeName: 'sneaker'},
-          {name: '服装', typeName: 'clothes'},
-          {name: '配饰', typeName: 'accessory'},
-          {name: '箱包', typeName: 'bag'},
-          {name: '眼镜', typeName: 'glasses'},
-          {name: '生活', typeName: 'life'}
+          {name: '所有', typeName: '/all'},
+          {name: '鞋履', typeName: '/sneaker'},
+          {name: '服装', typeName: '/clothes'},
+          {name: '配饰', typeName: '/accessory'},
+          {name: '箱包', typeName: '/bag'},
+          {name: '眼镜', typeName: '/glasses'},
+          {name: '生活', typeName: '/life'}
         ]
       }
     },

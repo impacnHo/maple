@@ -16,7 +16,7 @@ export default new Router({
     {
       path: '/:typeName',
       name: 'viewByType',
-      component: ProductList
+      component: ProductList,
     },
     {
       path: '/product/:productNum',
