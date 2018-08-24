@@ -49,10 +49,10 @@
 </template>
 
 <script>
-  import vPdLeft from './v-pd-left'
-  import vPdRight from './v-pd-right'
-  import vOperator from "./v-operator";
-  import vTips from './v-tips'
+  import vPdLeft from './product/v-pd-left'
+  import vPdRight from './product/v-pd-right'
+  import vOperator from "./product/v-operator";
+  import vTips from './product/v-tips'
 
   export default {
     name: "v-productDetail",

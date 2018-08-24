@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '../components/Index'
 import ProductList from '../components/v-productList'
-import ProductDetail  from '../components/product/v-productDetail'
+import ProductDetail from '../components/v-productDetail'
+import Register from '../components/v-register'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/product/:productNum',
       name: 'product',
       component: ProductDetail
+    },
+    {
+      path: '/user/register',
+      name: 'register',
+      component: Register
     }
   ]
 })

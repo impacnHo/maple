@@ -14,7 +14,7 @@
     </v-flex>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat to="login">
+      <v-btn flat to="login" @click="goRegister">
         <v-icon>account_circle</v-icon>
       </v-btn>
     </v-toolbar-items>
@@ -32,6 +32,9 @@
       }
     },
     methods: {
+      goRegister() {
+        this.$router.push({path: '/user/register'})
+      },
       toggle() {
         Bus.$emit('toggle-sidebar');
       },
@@ -46,7 +49,7 @@
     },
     mounted() {
       let me = this;
-      Bus.$on('clear-keyword',function () {
+      Bus.$on('clear-keyword', function () {
         me.keyword = ''
       })
     }
