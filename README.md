@@ -13,6 +13,8 @@
 
 > Aug 24, 2018 - View product details and base register function √
 
+> Aug 26, 2018 - User login & logout, guest register √
+
 ## Build Setup
 
 ``` bash
