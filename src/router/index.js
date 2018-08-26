@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '../components/Index'
+import Index from '../components/v-index'
 import ProductList from '../components/v-productList'
 import ProductDetail from '../components/v-productDetail'
-import Login from '../components/log/login'
-import Logup from '../components/log/logup'
+import Login from '../components/log/v-login'
+import Logup from '../components/log/v-logup'
 
 Vue.use(Router)
 

@@ -1,23 +1,33 @@
 <template>
-  <v-container grid-list-md text-xs-center>
-    <v-layout row wrap v-if="hasData">
-      <v-product-card v-for="item in list" :key="item.productNum" v-bind="item"></v-product-card>
-    </v-layout>
-    <v-layout row wrap v-else>
-      <v-not-found></v-not-found>
-    </v-layout>
-    <v-pager :total="totalPages" :current="currentPage" @goPage="goPage"></v-pager>
-  </v-container>
+  <v-app>
+    <v-sidebar></v-sidebar>
+    <v-header></v-header>
+    <v-content class="bg">
+      <v-container grid-list-lg text-center>
+        <v-layout row wrap v-if="hasData">
+          <v-product-card class="my-2" v-for="item in list" :key="item.productNum" v-bind="item"></v-product-card>
+        </v-layout>
+        <v-layout row wrap v-else>
+          <v-not-found></v-not-found>
+        </v-layout>
+        <v-pager :total="totalPages" :current="currentPage" @goPage="goPage"></v-pager>
+      </v-container>
+    </v-content>
+    <v-foot></v-foot>
+  </v-app>
 </template>
 
 <script>
+  import vHeader from './common/v-header'
+  import vFoot from './common/v-foot'
+  import vSidebar from './common/v-sidebar'
   import vProductCard from './common/v-productCard'
   import vPager from './common/v-pager'
   import vNotFound from './common/v-notFound'
 
   export default {
     name: "v-productList",
-    components: {vProductCard, vPager, vNotFound},
+    components: {vHeader, vSidebar, vFoot, vProductCard, vPager, vNotFound},
     data() {
       return {
         // 浏览方式api、数据列表、当前页数、总页数

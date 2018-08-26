@@ -1,5 +1,5 @@
 <template>
-  <v-flex lg4 md4 sm12>
+  <v-flex lg4 md12 sm12>
     <v-parallax :src="this.poster">
       <v-layout align-center column justify-center>
         <h1 class="slogen hidden-sm-and-down">{{this.slogen}}</h1>
