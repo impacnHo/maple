@@ -4,7 +4,7 @@
       <v-layout justify-center row>
         <v-flex lg4 md5 sm7 xs8 text-center class="pannel" px-5 py-5>
           <div>
-            <h1>Maple Mall</h1>
+            <h1 @click="goIndex">Maple Mall</h1>
             <h4>为你搜罗全球商品</h4>
           </div>
           <div class="mt-5">
@@ -23,6 +23,7 @@
                             :append-icon="showPwd ? 'visibility_off' : 'visibility'"
                             :type="showPwd ? 'text':'password'"
                             @click:append="showPwd = !showPwd"
+                            @keyup.enter="login"
                             label="密码"></v-text-field>
               <v-btn large block class="white--text my-5" color="blue darken-2" :disabled="!valid" @click="login">登录
               </v-btn>
@@ -36,8 +37,11 @@
 </template>
 
 <script>
+  import VFoot from "../common/v-foot";
+
   export default {
     name: "v-login",
+    components: {VFoot},
     data() {
       return {
         valid: true,
@@ -64,14 +68,11 @@
         }
         this.$axios(options).then(function (response) {
           if (response.data.data != null) {
-            alert('登录成功：token = ' + response.data.data)
             sessionStorage.setItem('access_token', response.data.data)
             sessionStorage.setItem('username', me.userRegistry.username)
-            console.log('ok')
             me.$router.push('/')
-            console.log('ojbk')
           } else {
-            alert('登录失败：' + response.data.message)
+            console.log('登录失败：' + response.data.message)
           }
         }).catch(function (error) {
           console.log(error)
@@ -79,6 +80,9 @@
       },
       goLogup() {
         this.$router.push('/user/logup')
+      },
+      goIndex() {
+        this.$router.push('/')
       }
     }
   }
@@ -101,6 +105,10 @@
     font-style: italic;
     font-family: "Times New Roman";
     color: #1565C0;
+  }
+
+  h1:hover {
+    cursor: pointer;
   }
 
   h4 {

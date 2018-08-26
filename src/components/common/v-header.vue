@@ -14,22 +14,25 @@
     </v-flex>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat @click="go('/')">
+      <v-btn flat>
         <v-icon>account_circle</v-icon>
-        <span v-if="username !== ''" class="ml-2 hidden-sm-and-down">{{username}}</span>
+        <span class="ml-2 hidden-sm-and-down">{{username}}</span>
       </v-btn>
       <v-menu :nudge-width="100">
         <v-toolbar-title slot="activator">
           <v-icon dark>arrow_drop_down</v-icon>
         </v-toolbar-title>
         <v-list v-if="logged">
-          <v-list-tile v-for="(item,index) in userItems" :key="index" @click="go(item.to)">
-            <v-list-tile-title v-text="item.text"></v-list-tile-title>
+          <v-list-tile @click="go('/user/login')">
+            <v-list-tile-title><i class="fas fa-sign-in-alt mr-2"></i>登录</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile @click="go('/user/logup')">
+            <v-list-tile-title><i class="fas fa-user-plus mr-2"></i>注册</v-list-tile-title>
           </v-list-tile>
         </v-list>
         <v-list v-else>
-          <v-list-tile v-for="(item,index) in guestItems" :key="index" @click="logout">
-            <v-list-tile-title v-text="item.text"></v-list-tile-title>
+          <v-list-tile @click="logout">
+            <v-list-tile-title><i class="fas fa-sign-out-alt mr-2"></i>注销</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -45,13 +48,7 @@
     data() {
       return {
         keyword: '',
-        guestItems: [
-          {text: '登录', to: '/user/login'},
-          {text: '注册', to: '/user/logup'}
-        ],
-        userItems: [
-          {text: '注销', to: '/user/logout'},
-        ]
+        username: sessionStorage.getItem('username'),
       }
     },
     methods: {
@@ -59,10 +56,9 @@
         this.$router.push(to)
       },
       logout() {
-        console.log('退出')
         sessionStorage.removeItem('access_token')
         sessionStorage.removeItem('username')
-        this.$router.push('/')
+        this.$router.push('/user/login')
       },
       toggle() {
         Bus.$emit('toggle-sidebar');
@@ -77,11 +73,8 @@
       }
     },
     computed: {
-      username() {
-        return sessionStorage.getItem('username') == null ? '' : sessionStorage.getItem('username')
-      },
       logged() {
-        return sessionStorage.getItem('username') == null ? false : true
+        return sessionStorage.getItem('username') == null ? true : false
       }
     },
     mounted() {

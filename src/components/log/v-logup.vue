@@ -4,7 +4,7 @@
       <v-layout justify-center row>
         <v-flex lg4 md5 sm7 xs8 text-center class="pannel" px-5 py-5>
           <div>
-            <h1>Maple Mall</h1>
+            <h1 @click="goIndex">Maple Mall</h1>
             <h4>为你搜罗全球商品</h4>
           </div>
           <div class="mt-5">
@@ -78,6 +78,9 @@
       },
       goLogin() {
         this.$router.push('/user/login')
+      },
+      goIndex() {
+        this.$router.push('/')
       }
     }
   }
@@ -100,6 +103,10 @@
     font-style: italic;
     font-family: "Times New Roman";
     color: #1565C0;
+  }
+
+  h1:hover {
+    cursor: pointer;
   }
 
   h4 {
