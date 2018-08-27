@@ -5,10 +5,11 @@ import ProductList from '../components/v-productList'
 import ProductDetail from '../components/v-productDetail'
 import Login from '../components/log/v-login'
 import Logup from '../components/log/v-logup'
+import Profile from '../components/user/v-profile'
 
 Vue.use(Router)
 
-export default new Router({
+const router =  new Router({
   routes: [
     {
       path: '/',
@@ -26,14 +27,31 @@ export default new Router({
       component: ProductDetail
     },
     {
-      path: '/user/login',
+      path: '/login',
       name: 'Login',
       component: Login
     },
     {
-      path: '/user/logup',
+      path: '/logup',
       name: 'Logup',
       component: Logup
+    },
+    {
+      path: '/userInfo/profile',
+      name: 'Profile',
+      component: Profile,
+      meta: {
+        requireAuth: true
+      }
     }
-  ]
+  ],
 })
+
+router.beforeEach(function (to,from,next) {
+  if(to.meta.requireAuth === true && to.path !== '/login' && to.path !== '/logup' && sessionStorage.getItem('access_token') == null) {
+    return next('/login')
+  }
+  next()
+})
+
+export default router

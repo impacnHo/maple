@@ -23,10 +23,10 @@
           <v-icon dark>arrow_drop_down</v-icon>
         </v-toolbar-title>
         <v-list v-if="logged">
-          <v-list-tile @click="go('/user/login')">
+          <v-list-tile @click="go('/login')">
             <v-list-tile-title><i class="fas fa-sign-in-alt mr-2"></i>登录</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile @click="go('/user/logup')">
+          <v-list-tile @click="go('/logup')">
             <v-list-tile-title><i class="fas fa-user-plus mr-2"></i>注册</v-list-tile-title>
           </v-list-tile>
         </v-list>
@@ -58,14 +58,14 @@
       logout() {
         sessionStorage.removeItem('access_token')
         sessionStorage.removeItem('username')
-        this.$router.push('/user/login')
+        this.$router.push('/login')
       },
       toggle() {
         Bus.$emit('toggle-sidebar');
       },
       search() {
         this.$router.push({
-          path: 'search',
+          path: '/product/search',
           query: {
             keyword: this.keyword
           }

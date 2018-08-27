@@ -5,7 +5,6 @@
         <h5 class="font-weight-light">{{brandName}}</h5>
         <h4 class="font-italic">{{name}} {{subName}}</h4>
         <h6><span class="badge badge-dark">CNY</span> {{priceStr}}</h6>
-        {{typeof priceStr}}
         <v-divider></v-divider>
         <h5>尺码</h5>
         <v-radio-group v-if="!soldOut" v-model="row" row>

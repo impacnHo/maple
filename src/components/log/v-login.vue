@@ -63,7 +63,7 @@
         let options = {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          url: this.$axios.defaults.baseURL + '/user/login',
+          url: this.$axios.defaults.baseURL + '/userRegistry/login',
           data: this.userRegistry
         }
         this.$axios(options).then(function (response) {
@@ -79,7 +79,7 @@
         })
       },
       goLogup() {
-        this.$router.push('/user/logup')
+        this.$router.push('/logup')
       },
       goIndex() {
         this.$router.push('/')

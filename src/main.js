@@ -8,8 +8,10 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+// axios配置
 axios.defaults.baseURL = 'http://119.23.30.235:8080/maple-server'
 axios.defaults.withCredentials = true
+
 // 将api方法绑定全局
 Vue.prototype.$axios = axios
 Vue.use(Vuetify)

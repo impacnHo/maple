@@ -64,7 +64,7 @@
             active: false,
             items: [
               {title: '地址簿', to: '/user/address', action: 'fas fa-map-marker-alt'},
-              {title: '档案', to: '/user/profile', action: 'fas fa-pen-nib'}
+              {title: '档案', to: '/userInfo/profile', action: 'fas fa-pen-nib'}
             ]
           },
           {
