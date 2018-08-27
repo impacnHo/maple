@@ -70,9 +70,11 @@
             me.hasData = false
           }
           me.currentPage = page
-          me.totalPages = response.data.message
+          me.totalPages = parseInt(response.data.message)
           // 还原api，避免参数叠加
           me.api = '/product'
+        }).catch(function (error) {
+          console.log(error)
         })
       },
       goPage(index) {

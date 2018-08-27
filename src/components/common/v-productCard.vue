@@ -6,7 +6,7 @@
         <h6>{{name}}</h6>
         <h4 class="hidden-sm-and-down">{{subName}}</h4>
         <h5>
-          <span class="badge badge-dark">CNY {{price}}</span>
+          <span class="badge badge-dark">CNY {{priceStr}}</span>
         </h5>
       </div>
     </div>
@@ -19,13 +19,21 @@
     props: ['productNum', 'name', 'subName', 'price'],
     methods: {
       getProduct(productNum) {
-        let url = 'product/' + productNum;
-        this.$router.push({path: url})
+        let url = 'p/' + productNum;
+        this.$router.push(url)
       }
     },
     computed: {
       poster() {
         return 'http://pbw790ert.bkt.clouddn.com/product/' + this.productNum + ".jpg"
+      },
+      priceStr() {
+        if(this.price.toString().length > 3) {
+          let items = this.price.toString().split('')
+          items.splice(1,0,', ')
+          return items.join('')
+        }
+        return this.price.toString()
       }
     }
   }

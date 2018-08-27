@@ -4,7 +4,8 @@
       <v-container text-left>
         <h5 class="font-weight-light">{{brandName}}</h5>
         <h4 class="font-italic">{{name}} {{subName}}</h4>
-        <h6><span class="badge badge-dark">CNY</span> {{price}}</h6>
+        <h6><span class="badge badge-dark">CNY</span> {{priceStr}}</h6>
+        {{typeof priceStr}}
         <v-divider></v-divider>
         <h5>尺码</h5>
         <v-radio-group v-if="!soldOut" v-model="row" row>
@@ -43,13 +44,21 @@
         if (!this.soldOut && this.row != null)
           return false
         return true
+      },
+      priceStr() {
+        if(this.price.toString().length > 3) {
+          let items = this.price.toString().split('')
+          items.splice(1,0,', ')
+          return items.join('')
+        } else {
+          return this.price.toString()
+        }
       }
     },
     methods: {
       // 计算某尺码的剩余量
       getStockQlty(id) {
         let result = 0;
-
         for (let i = 0; i < this.stocks.length; i++) {
           if (this.stocks[i].id === id) {
             result = this.stocks[i].quanlity

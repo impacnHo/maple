@@ -114,6 +114,8 @@
           me.itemsForLeft.productNum = items.productNum
           me.itemsForLeft.price = items.price
           me.itemsForLeft.lanchDate = items.lanchDate
+        }).catch(function (error) {
+          console.log(error)
         })
       }
     },

@@ -16,12 +16,12 @@ export default new Router({
       component: Index
     },
     {
-      path: '/:typeName',
+      path: '/product/:typeName',
       name: 'viewByType',
       component: ProductList,
     },
     {
-      path: '/product/:productNum',
+      path: '/product/p/:productNum',
       name: 'product',
       component: ProductDetail
     },

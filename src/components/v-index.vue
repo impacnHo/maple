@@ -42,14 +42,14 @@
             poster: 'http://pbw790ert.bkt.clouddn.com/subBanner2.jpg',
             slogen: 'YEEZY SEANSON 2018',
             type: '鞋履',
-            to: 'sneaker'
+            to: '/product/sneaker'
           },
           {
             index: 4,
             poster: 'http://pbw790ert.bkt.clouddn.com/subBanner.jpg',
             slogen: '人类制造 2018春夏系列',
             type: '服装',
-            to: 'clothes'
+            to: '/product/clothes'
           }
         ],
         subBannerList: [
@@ -58,21 +58,21 @@
             poster: 'http://pbw790ert.bkt.clouddn.com/subBanner4.jpg',
             slogen: 'Off White × RIMOWA',
             type: '箱包',
-            to: 'bag'
+            to: '/product/bag'
           },
           {
             index: 6,
             poster: 'http://pbw790ert.bkt.clouddn.com/subBanner5.jpg',
             slogen: 'CASIO',
             type: '配饰',
-            to: 'accessories'
+            to: '/product/accessories'
           },
           {
             index: 7,
             poster: 'http://pbw790ert.bkt.clouddn.com/subBanner6.jpg',
             slogen: '童年玩物系列',
             type: '生活小物',
-            to: 'life'
+            to: '/product/life'
           }
         ]
       }
