@@ -51,7 +51,7 @@
 
         // 判断是搜索还是浏览
         if (keyword !== undefined && 'search' === typeName) {
-          this.api = 'search?keyword=' + keyword
+          this.api += '/search?keyword=' + keyword
         } else {
           if ('all' !== typeName) {
             this.api = this.api + '/' + typeName
