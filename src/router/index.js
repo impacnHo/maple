@@ -3,9 +3,10 @@ import Router from 'vue-router'
 import Index from '../components/v-index'
 import ProductList from '../components/v-productList'
 import ProductDetail from '../components/v-productDetail'
-import Login from '../components/log/v-login'
-import Logup from '../components/log/v-logup'
+import Login from '../components/auth/v-login'
+import Logup from '../components/auth/v-logup'
 import Profile from '../components/user/v-profile'
+import AddressBook from '../components/user/v-addressBook'
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ const router =  new Router({
       meta: {
         requireAuth: true
       }
+    },
+    {
+      path: '/userConsignee/addressBook',
+      name: 'AddressBook',
+      component: AddressBook
     }
   ],
 })
