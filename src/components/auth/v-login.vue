@@ -8,7 +8,7 @@
             <h4>为你搜罗全球商品</h4>
           </div>
           <div class="mt-5">
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form ref="form" v-model="valid">
               <v-text-field class="my-5" prepend-icon="account_circle"
                             v-model="userRegistry.username"
                             :rules="[rules.counterUsn,rules.validateUsn]"

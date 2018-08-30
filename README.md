@@ -8,13 +8,6 @@
 
 > Click the link to preview: [http://alistar.xyz:8080/maple/#/](http://alistar.xyz:8080/maple/#/)
 
-## Log
-> Aug 22, 2018 - Browse products(view all, view by type, search) √
-
-> Aug 24, 2018 - View product details and base register function √
-
-> Aug 26, 2018 - User login & logout, guest register √
-
 ## Build Setup
 
 ``` bash

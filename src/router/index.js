@@ -48,7 +48,10 @@ const router =  new Router({
     {
       path: '/userConsignee/addressBook',
       name: 'AddressBook',
-      component: AddressBook
+      component: AddressBook,
+      meta: {
+        requireAuth: true
+      }
     }
   ],
 })
