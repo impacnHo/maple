@@ -7,6 +7,7 @@ import Login from '../components/auth/v-login'
 import Logup from '../components/auth/v-logup'
 import Profile from '../components/user/v-profile'
 import AddressBook from '../components/user/v-addressBook'
+import Password from  '../components/user/v-password'
 
 Vue.use(Router)
 
@@ -49,6 +50,14 @@ const router =  new Router({
       path: '/userConsignee/addressBook',
       name: 'AddressBook',
       component: AddressBook,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/userInfo/password',
+      name: 'Password',
+      component: Password,
       meta: {
         requireAuth: true
       }

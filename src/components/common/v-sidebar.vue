@@ -64,7 +64,8 @@
             active: false,
             items: [
               {title: '地址簿', to: '/userConsignee/addressBook', action: 'fas fa-map-marker-alt'},
-              {title: '档案', to: '/userInfo/profile', action: 'fas fa-pen-nib'}
+              {title: '档案', to: '/userInfo/profile', action: 'fas fa-pen-nib'},
+              {title: '修改密码', to: '/userInfo/password', action: 'fas fa-lock'}
             ]
           },
           {

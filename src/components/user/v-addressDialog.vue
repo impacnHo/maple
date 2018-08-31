@@ -39,7 +39,7 @@
     data() {
       return {
         dialog: false,
-        valid: true,
+        valid: false,
         rules: {
           nameRule: value => (value.length > 1 && value.length < 5) || '姓名长度必须为2-4',
           addressRule: value => (value.length > 10 && value.length < 40) || '地址长度必须为10-40',
@@ -58,6 +58,7 @@
         // 校验
         if (this.canSubmit === false) {
           alert('请填写所有信息')
+          this.valid = false
           return false
         }
 

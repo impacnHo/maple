@@ -10,7 +10,7 @@
         <v-container>
           <v-card>
             <v-container>
-              <h3>我的地址簿 {{items.length}}</h3>
+              <h3>我的地址簿</h3>
               <v-address-dialog method="save" title="新增地址" icon="add"
                                 v-on:refreshData="getData()"></v-address-dialog>
               <v-btn outline small fab color="blue darken-3" @click="toggle">
