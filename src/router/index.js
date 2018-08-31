@@ -8,6 +8,7 @@ import Logup from '../components/auth/v-logup'
 import Profile from '../components/user/v-profile'
 import AddressBook from '../components/user/v-addressBook'
 import Password from  '../components/user/v-password'
+import CartList from '../components/user/v-cartList'
 
 Vue.use(Router)
 
@@ -58,6 +59,14 @@ const router =  new Router({
       path: '/userInfo/password',
       name: 'Password',
       component: Password,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/user/cart',
+      name: 'CartList',
+      component: CartList,
       meta: {
         requireAuth: true
       }
