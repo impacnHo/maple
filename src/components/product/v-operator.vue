@@ -12,8 +12,8 @@
                    :value="item.id"></v-radio>
         </v-radio-group>
         <h5 v-else class="soldOut">售罄</h5>
-        <v-text-field type="number" min="1" :max="this.maxQuanlity" v-model="inputQuanlity" label="数量"
-                      outline @keyup="format"></v-text-field>
+        <v-text-field type="number" min="1" :max="this.maxQuanlity" v-model.lazy="inputQuanlity" label="数量"
+                      outline @blur="format"></v-text-field>
         <h6>剩余量：<strong>{{maxQuanlity}}</strong></h6>
         <v-btn block large :disabled="allowAddtoCart" color="blue darken-3" class="white--text" @click="addToCart">
           添加购物车
@@ -45,9 +45,9 @@
         return true
       },
       priceStr() {
-        if(this.price.toString().length > 3) {
+        if (this.price.toString().length > 3) {
           let items = this.price.toString().split('')
-          items.splice(1,0,', ')
+          items.splice(1, 0, ', ')
           return items.join('')
         } else {
           return this.price.toString()
@@ -75,7 +75,31 @@
       },
       // 点击“添加购物车方法”
       addToCart() {
-        alert('再按中你')
+        // 准备数据 Stock大小写
+        let cartDTO = {
+            stockId: this.row,
+            quanlity: parseInt(this.inputQuanlity)
+        }
+
+        // 准备请求
+        const options = {
+          method: 'POST',
+          headers: {'access_token': sessionStorage.getItem('access_token')},
+          url: this.$axios.defaults.baseURL + '/cart/',
+          data: cartDTO
+        }
+
+        // 发送请求
+        this.$axios(options).then(function (response) {
+          if (response.data.code === 200) {
+            alert('添加购物车成功')
+          } else {
+            alert('认证失败')
+            me.$router.push('/login')
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
       },
       format() {
         let val = this.inputQuanlity

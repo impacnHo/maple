@@ -73,7 +73,6 @@
         this.$axios(options).then(function (response) {
           if (response.data.code === 200) {
             me.items = response.data.data
-            console.log('加载完成')
           } else {
             alert('认证失败')
             me.$router.push('/login')
@@ -85,7 +84,6 @@
     },
     created() {
       this.getData()
-      console.log('方法完成')
     }
   }
 </script>
