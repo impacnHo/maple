@@ -12,32 +12,44 @@
             <v-container>
               <h3>我的购物车</h3>
               <v-divider></v-divider>
-              <v-list three-line v-if="items.length > 0">
-                <v-list-tile v-for="item in items" :key="item.id" avatar @click="">
-                  <v-list-tile-avatar>
-                    <v-icon class="grey lighten-1 white--text">local_shipping</v-icon>
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                    <v-list-tile-title>
-                      <table border="1">
-                        <tr>
-                          <td>{{item.id}}</td>
-                          <td>{{item.name}} {{item.subName}}</td>
-                          <td>{{item.productNum}}</td>
-                          <td>{{item.stockName}}</td>
-                          <td>{{item.quanlity}}</td>
-                        </tr>
-                      </table>
-                    </v-list-tile-title>
-                  </v-list-tile-content>
-                  <v-list-tile-action>
+              <v-container text-center fluid>
+                <v-layout row wrap>
+                  <v-flex lg1>
+                    全选
+                  </v-flex>
+                  <v-flex lg6>商品描述</v-flex>
+                  <v-flex lg2>单价</v-flex>
+                  <v-flex lg2>数量</v-flex>
+                  <v-flex lg1>操作</v-flex>
+                </v-layout>
+              </v-container>
+              <v-divider></v-divider>
+              <v-container text-center>
+                <v-layout class="item" row wrap align-center v-for="item in items" :key="item.id">
+                  <v-flex lg1 md1 sm1 xs1>
+                    选择
+                  </v-flex>
+                  <v-flex lg2 md2 sm2 xs2>
+                    <img class="img-fluid" src="http://pbw790ert.bkt.clouddn.com/product/142334.jpg">
+                  </v-flex>
+                  <v-flex lg4 md4 sm4 xs4>
+                    <span class="productName">{{item.name}} {{item.subName}}</span>
+                    <br>
+                    <span class="sizeName">{{item.stockName}}</span>
+                  </v-flex>
+                  <v-flex lg2 md2 sm2 xs2><span class="sizeName">&yen;{{item.price}}</span></v-flex>
+                  <v-flex lg2 md2 sm2 xs2>
+                    <!--append-outer-icon="add" prepend-icon="remove"-->
+                    <v-text-field type="number" min="1" v-model.lazy="item.quanlity" class="mt-4" solo></v-text-field>
+                  </v-flex>
+                  <v-flex lg1 md1 sm1 xs1>
                     <v-btn outline small fab color="red" @click="remove(item.id)">
                       <v-icon dark>delete</v-icon>
                     </v-btn>
-                  </v-list-tile-action>
-                </v-list-tile>
-              </v-list>
-              <h4 v-else>暂无数据</h4>
+                  </v-flex>
+                  <v-divider></v-divider>
+                </v-layout>
+              </v-container>
             </v-container>
           </v-card>
         </v-container>
@@ -58,6 +70,7 @@
     components: {vHeader, vSidebar, vFoot},
     data() {
       return {
+        selectAll: null,
         items: []
       }
     },
@@ -89,5 +102,12 @@
 </script>
 
 <style scoped>
-
+  .productName{
+    font-style: italic;
+    font-size: large;
+  }
+  .sizeName {
+    font-weight: bold;
+    font-size: medium;
+  }
 </style>

@@ -26,7 +26,8 @@
                     <v-list-tile-title><span class="name">{{item.name}}</span></v-list-tile-title>
                     <v-list-tile-sub-title class="mt-2">
                       <span class="address">{{item.address}}</span>
-                      <span class="tel">{{item.tel}}</span></v-list-tile-sub-title>
+                      <span class="tel">{{item.tel}}</span>
+                    </v-list-tile-sub-title>
                   </v-list-tile-content>
                   <v-list-tile-action v-show="edit">
                     <v-address-dialog v-bind="item" method="update" title="修改地址" icon="edit"
