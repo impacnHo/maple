@@ -12,26 +12,17 @@
             <v-container>
               <h3>我的购物车</h3>
               <v-divider></v-divider>
-              <!--<v-container text-center fluid>-->
-              <!--<v-layout row wrap>-->
-              <!--<v-flex lg2>-->
-              <!--<input type="checkbox" id="selectAll" v-model="selectAll">-->
-              <!--<label for="selectAll">全选</label>-->
-              <!--</v-flex>-->
-              <!--<v-flex lg5>商品描述</v-flex>-->
-              <!--<v-flex lg2>单价</v-flex>-->
-              <!--<v-flex lg2>数量</v-flex>-->
-              <!--<v-flex lg1>操作</v-flex>-->
-              <!--</v-layout>-->
-              <!--</v-container>-->
-              <!--<v-divider></v-divider>-->
               <v-container text-md-center>
                 <v-layout row wrap>
                   <v-flex lg2>
-                    <v-checkbox label="全选" color="blue darken-3"></v-checkbox>
+                    <v-checkbox label="全选" color="blue darken-3" v-model="selectAll"></v-checkbox>
+                    {{selectAll}}
                   </v-flex>
                   <v-flex lg5 class="v-input">
-                    <v-label><v-spacer></v-spacer>商品详情</v-label>
+                    <v-label>
+                      <v-spacer></v-spacer>
+                      商品详情
+                    </v-label>
                   </v-flex>
                   <v-flex lg2 class="v-input">
                     <v-label>单价</v-label>
@@ -59,7 +50,6 @@
                   </v-flex>
                   <v-flex lg2 md2 sm2 xs2><span class="sizeName">&yen;{{item.price}}</span></v-flex>
                   <v-flex lg2 md2 sm2 xs2>
-                    <!--append-outer-icon="add" prepend-icon="remove"-->
                     <v-text-field type="number" v-model.lazy="item.quanlity" @blur="updateCart(item.id)" min="1"
                                   :max="item.maxQuanlity" class="mt-4" solo></v-text-field>
                   </v-flex>
@@ -70,7 +60,7 @@
                   </v-flex>
                   <v-divider></v-divider>
                 </v-layout>
-                已选：{{select}}
+                已选：{{select}}，共{{selectNum}}件商品
               </v-container>
             </v-container>
           </v-card>
@@ -93,7 +83,7 @@
     data() {
       return {
         selectAll: false,
-        select:[],
+        select: [],
         items: []
       }
     },
@@ -192,8 +182,31 @@
         })
       }
     },
+    computed: {
+      selectNum() {
+        return this.select.length
+      }
+    },
     created() {
       this.getData()
+    },
+    watch: {
+      selectAll: function (value) {
+        if (value === true) {
+          // 记住要归零！
+          this.select = []
+          for (let i = 0; i < this.items.length; i++) {
+            this.select[i] = this.items[i].id
+          }
+        } else {
+          this.select = []
+        }
+      },
+      selectNum: function (value) {
+        if(value === this.items.length) {
+          this.selectAll = true
+        }
+      }
     }
   }
 </script>
