@@ -77,8 +77,8 @@
       addToCart() {
         // 准备数据 Stock大小写
         let cartDTO = {
-            stockId: this.row,
-            quanlity: parseInt(this.inputQuanlity)
+          stockId: this.row,
+          quanlity: parseInt(this.inputQuanlity)
         }
 
         // 准备请求
@@ -103,9 +103,7 @@
       },
       format() {
         let val = this.inputQuanlity
-        if (val === '')
-          this.inputQuanlity = 1
-        if (val <= 0)
+        if (val === '' || val <= 0)
           this.inputQuanlity = 1
         if (val > this.maxQuanlity)
           this.inputQuanlity = this.maxQuanlity
