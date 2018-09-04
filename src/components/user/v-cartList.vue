@@ -16,7 +16,6 @@
                 <v-layout row wrap>
                   <v-flex lg2>
                     <v-checkbox label="全选" color="blue darken-3" v-model="selectAll"></v-checkbox>
-                    {{selectAll}}
                   </v-flex>
                   <v-flex lg5 class="v-input">
                     <v-label>
@@ -60,9 +59,19 @@
                   </v-flex>
                   <v-divider></v-divider>
                 </v-layout>
-                已选：{{select}}，共{{selectNum}}件商品
+                <!--已选：{{select}}，共{{select.length}}件商品，合计&yen;{{total}}-->
               </v-container>
             </v-container>
+          </v-card>
+        </v-container>
+        <v-container text-center>
+          <v-card>
+            <v-card-title>
+              <v-spacer></v-spacer>
+              <h6>已选 <span class="highlight">{{select.length}}</span> 件商品 | 合计 <span class="highlight">&yen;{{total}}</span></h6>
+              <v-spacer></v-spacer>
+              <v-btn large color="blue darken-3" class="white--text">结算</v-btn>
+            </v-card-title>
           </v-card>
         </v-container>
       </v-container>
@@ -183,8 +192,16 @@
       }
     },
     computed: {
-      selectNum() {
-        return this.select.length
+      total() {
+        let total = 0.00
+        for (let i = 0; i < this.select.length; i++) {
+          for (let j = 0; j < this.items.length; j++) {
+            if(this.select[i] === this.items[j].id) {
+              total += this.items[j].quanlity * this.items[j].price
+            }
+          }
+        }
+        return total
       }
     },
     created() {
@@ -198,14 +215,17 @@
           for (let i = 0; i < this.items.length; i++) {
             this.select[i] = this.items[i].id
           }
-        } else {
+        }
+
+        if (value === false && this.select.length === this.items.length) {
           this.select = []
         }
       },
-      selectNum: function (value) {
-        if(value === this.items.length) {
+      select: function (items) {
+        if (items.length === this.items.length)
           this.selectAll = true
-        }
+        else
+          this.selectAll = false
       }
     }
   }
@@ -224,5 +244,11 @@
 
   img:hover {
     cursor: pointer;
+  }
+
+  .highlight {
+    font-size: large;
+    color: #1565C0;
+    font-weight: bold;
   }
 </style>
