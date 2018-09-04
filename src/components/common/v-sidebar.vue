@@ -1,14 +1,5 @@
 <template>
   <v-navigation-drawer v-model="drawer" app fixed>
-    <!--<v-subheader>商品分类</v-subheader>-->
-    <!--<v-divider></v-divider>-->
-    <!--<v-list dense>-->
-    <!--<v-list-tile v-for="(item,index) in productTypeList" :key="index" @click="view(item.typeName)">-->
-    <!--<v-list-tile-content>-->
-    <!--<v-list-tile-title>{{item.name}}</v-list-tile-title>-->
-    <!--</v-list-tile-content>-->
-    <!--</v-list-tile>-->
-    <!--</v-list>-->
     <v-list>
       <v-list-group v-for="item in items" v-model="item.active" :key="item.title">
         <v-list-tile slot="activator">

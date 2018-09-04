@@ -18,12 +18,12 @@
 </template>
 
 <script>
-  import vHeader from './common/v-header'
-  import vFoot from './common/v-foot'
-  import vSidebar from './common/v-sidebar'
-  import vProductCard from './common/v-productCard'
-  import vPager from './common/v-pager'
-  import vNotFound from './common/v-notFound'
+  import vHeader from '../common/v-header'
+  import vFoot from '../common/v-foot'
+  import vSidebar from '../common/v-sidebar'
+  import vProductCard from './v-productCard'
+  import vPager from '../common/v-pager'
+  import vNotFound from '../common/v-notFound'
 
   export default {
     name: "v-productList",

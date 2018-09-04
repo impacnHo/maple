@@ -58,13 +58,13 @@
 </template>
 
 <script>
-  import vHeader from './common/v-header'
-  import vFoot from './common/v-foot'
-  import vSidebar from './common/v-sidebar'
-  import vPdLeft from './product/v-pd-left'
-  import vPdRight from './product/v-pd-right'
-  import vOperator from "./product/v-operator";
-  import vTips from './product/v-tips'
+  import vHeader from '../common/v-header'
+  import vFoot from '../common/v-foot'
+  import vSidebar from '../common/v-sidebar'
+  import vPdLeft from './v-pd-left'
+  import vPdRight from './v-pd-right'
+  import vOperator from "./v-operator";
+  import vTips from './v-tips'
 
   export default {
     name: "v-productDetail",

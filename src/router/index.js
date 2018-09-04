@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '../components/v-index'
-import ProductList from '../components/v-productList'
-import ProductDetail from '../components/v-productDetail'
+import ProductList from '../components/product/v-productList'
+import ProductDetail from '../components/product/v-productDetail'
 import Login from '../components/auth/v-login'
 import Logup from '../components/auth/v-logup'
 import Profile from '../components/user/v-profile'
 import AddressBook from '../components/user/v-addressBook'
 import Password from  '../components/user/v-password'
 import CartList from '../components/user/v-cartList'
+import Checkout from '../components/order/v-checkout'
 
 Vue.use(Router)
 
@@ -67,6 +68,14 @@ const router =  new Router({
       path: '/user/cart',
       name: 'CartList',
       component: CartList,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/user/checkout',
+      name: 'Checkout',
+      component: Checkout,
       meta: {
         requireAuth: true
       }

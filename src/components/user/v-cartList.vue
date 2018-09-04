@@ -12,7 +12,7 @@
             <v-container>
               <h3>我的购物车</h3>
               <v-divider></v-divider>
-              <v-container text-md-center>
+              <v-container text-center>
                 <v-layout row wrap>
                   <v-flex lg2>
                     <v-checkbox label="全选" color="blue darken-3" v-model="selectAll"></v-checkbox>
@@ -34,7 +34,7 @@
                   </v-flex>
                 </v-layout>
                 <v-divider></v-divider>
-                <v-layout class="item" row wrap align-center v-for="item in items" :key="item.id">
+                <v-layout row wrap align-center v-for="item in items" :key="item.id">
                   <v-flex lg2 md2 sm2 xs2>
                     <v-checkbox color="blue darken-3" :value="item.id" v-model="select"></v-checkbox>
                   </v-flex>
@@ -59,7 +59,6 @@
                   </v-flex>
                   <v-divider></v-divider>
                 </v-layout>
-                <!--已选：{{select}}，共{{select.length}}件商品，合计&yen;{{total}}-->
               </v-container>
             </v-container>
           </v-card>
@@ -68,9 +67,12 @@
           <v-card>
             <v-card-title>
               <v-spacer></v-spacer>
-              <h6>已选 <span class="highlight">{{select.length}}</span> 件商品 | 合计 <span class="highlight">&yen;{{total}}</span></h6>
+              <h6>已选 <span class="highlight">{{select.length}}</span> 件商品 | 合计 <span
+                class="highlight">&yen;{{total}}</span></h6>
               <v-spacer></v-spacer>
-              <v-btn large color="blue darken-3" class="white--text">结算</v-btn>
+              <v-btn large color="blue darken-3" class="white--text" @click="checkout"
+                     :disabled="this.select.length===0">结算
+              </v-btn>
             </v-card-title>
           </v-card>
         </v-container>
@@ -189,6 +191,14 @@
         }).catch(function (error) {
           console.log(error)
         })
+      },
+      checkout() {
+        this.$router.push({
+          name: 'Checkout',
+          params: {
+            carts: this.select
+          }
+        })
       }
     },
     computed: {
@@ -196,7 +206,7 @@
         let total = 0.00
         for (let i = 0; i < this.select.length; i++) {
           for (let j = 0; j < this.items.length; j++) {
-            if(this.select[i] === this.items[j].id) {
+            if (this.select[i] === this.items[j].id) {
               total += this.items[j].quanlity * this.items[j].price
             }
           }
