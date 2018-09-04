@@ -55,6 +55,8 @@
         } else {
           if ('all' !== typeName) {
             this.api = this.api + '/' + typeName
+          } else {
+            this.api += '/all'
           }
         }
 

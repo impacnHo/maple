@@ -7,7 +7,7 @@
         <v-container>
           <v-card>
             <v-container>
-              <h3>提交订单</h3>
+              <h3>提交订单{{cartIds}}</h3>
               <v-divider></v-divider>
               <v-container>
                 <h4>收货地址</h4>
@@ -57,7 +57,8 @@
                 <v-layout mt-4>
                   <v-spacer></v-spacer>
                   <v-btn large class="white--text" color="blue darken-3"
-                         :disabled="this.addressId==null || carts.length ===0">提交订单
+                         :disabled="this.addressId==null || carts.length ===0"
+                         @click="saveOrder">提交订单
                   </v-btn>
                   <v-spacer></v-spacer>
                 </v-layout>
@@ -75,9 +76,10 @@
   import vHeader from '../common/v-header'
   import vFoot from '../common/v-foot'
   import vSidebar from '../common/v-sidebar'
+  import qs from 'qs'
 
   export default {
-    name: "v-confirmOrder",
+    name: "v-checkOut",
     components: {vHeader, vSidebar, vFoot},
     data() {
       return {
@@ -147,6 +149,35 @@
       },
       getProduct(productNum) {
         this.$router.push('/product/p/' + productNum)
+      },
+      saveOrder() {
+        // 准备数据
+        let order = {
+          cartIds: this.cartIds,
+          userConsigneeId: this.addressId
+        }
+        // 准备请求
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'access_token': sessionStorage.getItem('access_token')
+          },
+          url: this.$axios.defaults.baseURL + '/order/',
+          data: qs.stringify(order)
+        }
+        // 发送请求
+        let me = this
+        this.$axios(options).then(function (response) {
+          if (response.data.code === 200) {
+            alert('订单创建成功，id为' + response.data.data)
+          } else {
+            console.log('认证失败')
+            me.$router.push('/login')
+          }
+        }).catch(function (error) {
+          console.log(error)
+        })
       }
     },
     computed: {
