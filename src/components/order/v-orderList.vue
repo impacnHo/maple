@@ -11,9 +11,12 @@
               <v-divider></v-divider>
               <v-container text-center>
                 <v-container mb-5 v-for="item in items" :key="item.id" class="order">
-                  <v-layout row wrap>
-                    <v-flex lg12 text-left>
-                      <h5>订单号：#{{item.id}}</h5>
+                  <v-layout row wrap align-center class="order" style="background-color: whitesmoke;border: none;">
+                    <v-flex lg6 text-left>
+                      <h5>订单号：<span class="status">#{{item.id}}</span></h5>
+                    </v-flex>
+                    <v-flex lg6 text-right>
+                      <h6>创建时间：<span class="status">{{getTime(item.createTime)}}</span></h6>
                     </v-flex>
                   </v-layout>
                   <v-divider></v-divider>
@@ -124,6 +127,10 @@
       },
       getProduct(productNum) {
         this.$router.push('/product/p/' + productNum)
+      },
+      getTime(ms) {
+        // toLocaleString
+        return new Date(ms).toLocaleString()
       }
     },
     created() {

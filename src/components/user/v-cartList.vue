@@ -13,24 +13,21 @@
               <h3>我的购物车</h3>
               <v-divider></v-divider>
               <v-container text-center>
-                <v-layout row wrap>
+                <v-layout row wrap align-center>
                   <v-flex lg2>
                     <v-checkbox label="全选" color="blue darken-3" v-model="selectAll"></v-checkbox>
                   </v-flex>
-                  <v-flex lg5 class="v-input">
-                    <v-label>
-                      <v-spacer></v-spacer>
-                      商品详情
-                    </v-label>
+                  <v-flex lg5>
+                    <span style="color: grey;">商品详情</span>
                   </v-flex>
-                  <v-flex lg2 class="v-input">
-                    <v-label>单价</v-label>
+                  <v-flex lg2>
+                    <span style="color: grey;">单价</span>
                   </v-flex>
-                  <v-flex lg2 class="v-input">
-                    <v-label>数量</v-label>
+                  <v-flex lg2>
+                    <span style="color: grey;">数量</span>
                   </v-flex>
-                  <v-flex lg1 class="v-input">
-                    <v-label>操作</v-label>
+                  <v-flex lg1>
+                    <span style="color: grey;">操作</span>
                   </v-flex>
                 </v-layout>
                 <v-divider></v-divider>
