@@ -10,6 +10,7 @@ import AddressBook from '../components/user/v-addressBook'
 import Password from  '../components/user/v-password'
 import CartList from '../components/user/v-cartList'
 import Checkout from '../components/order/v-checkout'
+import OrderList from '../components/order/v-orderList'
 
 Vue.use(Router)
 
@@ -76,6 +77,14 @@ const router =  new Router({
       path: '/user/checkout',
       name: 'Checkout',
       component: Checkout,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/order/',
+      name: 'OrderList',
+      component: OrderList,
       meta: {
         requireAuth: true
       }

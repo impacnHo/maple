@@ -46,7 +46,7 @@
             active: false,
             items: [
               {title: '购物车', to: '/user/cart', action: 'fas fa-shopping-cart'},
-              {title: '订单', to: '/user/cart', action: 'fas fa-list-ol'}
+              {title: '订单', to: '/order/', action: 'fas fa-list-ol'}
             ]
           },
           {

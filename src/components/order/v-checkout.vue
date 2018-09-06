@@ -128,7 +128,6 @@
             allCart = response.data.data
             // 筛选
             if (allCart.length !== me.cartIds.length) {
-              console.log('cartIds.length = ' + me.cartIds.length)
               for (let i = 0; i < allCart.length; i++) {
                 for (let j = 0; j < me.cartIds.length; j++) {
                   if (me.cartIds[j] !== allCart[i].id) {
