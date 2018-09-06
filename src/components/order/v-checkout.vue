@@ -7,7 +7,7 @@
         <v-container>
           <v-card>
             <v-container>
-              <h3>提交订单{{cartIds}}</h3>
+              <h3>提交订单</h3>
               <v-divider></v-divider>
               <v-container>
                 <h4>收货地址</h4>
@@ -91,7 +91,7 @@
     },
     methods: {
       getData() {
-        this.cartIds = this.$route.params.carts
+        this.cartIds = this.$route.query.carts
         this.getConsignee()
         this.getCart()
       },
@@ -128,7 +128,6 @@
             allCart = response.data.data
             // 筛选
             if (allCart.length !== me.cartIds.length) {
-              console.log('非全选')
               console.log('cartIds.length = ' + me.cartIds.length)
               for (let i = 0; i < allCart.length; i++) {
                 for (let j = 0; j < me.cartIds.length; j++) {
@@ -152,10 +151,14 @@
       },
       saveOrder() {
         // 准备数据
-        let order = {
-          cartIds: this.cartIds,
-          userConsigneeId: this.addressId
+        let cartIds = ''
+        for(let i = 0;i < this.cartIds.length;i++) {
+          cartIds += this.cartIds[i]
+          if(i !== this.cartIds.length-1)
+            cartIds += ','
         }
+        let data = 'cartIds[]=' + cartIds + '&userConsigneeId=' + this.addressId
+
         // 准备请求
         const options = {
           method: 'POST',
@@ -164,8 +167,9 @@
             'access_token': sessionStorage.getItem('access_token')
           },
           url: this.$axios.defaults.baseURL + '/order/',
-          data: qs.stringify(order)
+          data: 'cartIds[]=3,4&userConsigneeId=13'
         }
+
         // 发送请求
         let me = this
         this.$axios(options).then(function (response) {

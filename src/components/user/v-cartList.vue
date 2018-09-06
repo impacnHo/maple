@@ -195,7 +195,7 @@
       checkout() {
         this.$router.push({
           name: 'Checkout',
-          params: {
+          query: {
             carts: this.select
           }
         })
