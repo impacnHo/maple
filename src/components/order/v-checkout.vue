@@ -166,7 +166,7 @@
             'access_token': sessionStorage.getItem('access_token')
           },
           url: this.$axios.defaults.baseURL + '/order/',
-          data: 'cartIds[]=3,4&userConsigneeId=13'
+          data: data
         }
 
         // 发送请求

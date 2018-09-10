@@ -11,6 +11,8 @@ import Password from  '../components/user/v-password'
 import CartList from '../components/user/v-cartList'
 import Checkout from '../components/order/v-checkout'
 import OrderList from '../components/order/v-orderList'
+import OrderDetail from '../components/order/v-orderDetail'
+import PayForOrder from '../components/order/v-pay'
 
 Vue.use(Router)
 
@@ -85,6 +87,14 @@ const router =  new Router({
       path: '/order/',
       name: 'OrderList',
       component: OrderList,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/order/:id',
+      name: 'OrderDetail',
+      component: OrderDetail,
       meta: {
         requireAuth: true
       }

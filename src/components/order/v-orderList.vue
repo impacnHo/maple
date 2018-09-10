@@ -13,10 +13,10 @@
                 <v-container mb-5 v-for="item in items" :key="item.id" class="order">
                   <v-layout row wrap align-center class="order" style="background-color: whitesmoke;border: none;">
                     <v-flex lg6 text-left>
-                      <h5>订单号：<span class="status">#{{item.id}}</span></h5>
+                      <h5>订单号：<span class="font-weight-bold">#{{item.id}}</span></h5>
                     </v-flex>
                     <v-flex lg6 text-right>
-                      <h6>创建时间：<span class="status">{{getTime(item.createTime)}}</span></h6>
+                      <h6>创建时间：<span class="font-weight-bold">{{getTime(item.createTime)}}</span></h6>
                     </v-flex>
                   </v-layout>
                   <v-divider></v-divider>
@@ -28,7 +28,8 @@
                             <v-container>
                               <v-layout align-center>
                                 <v-flex lg3>
-                                  <img class="img-fluid" @click="getProduct(subItem.productNum)" :alt="subItem.productNum"
+                                  <img class="img-fluid" @click="getProduct(subItem.productNum)"
+                                       :alt="subItem.productNum"
                                        :src="'http://pbw790ert.bkt.clouddn.com/product/' + subItem.productNum +'.jpg'">
                                 </v-flex>
                                 <v-flex>
@@ -50,9 +51,11 @@
                       </v-container>
                     </v-flex>
                     <v-flex lg3>
-                      <p class="status">{{getStatus(item.status)}}</p>
+                      <p class="font-weight-bold">{{getStatus(item.status)}}</p>
                       <p>&yen; {{item.total}}.00（含配送费用0.00）</p>
-                      <v-btn color="blue darken-3" class="white--text">查看详情</v-btn>
+                      <p class="blue--text" @click="goDatail(item.id)" style="cursor: pointer;">查看详情</p>
+                      <v-pay v-on:flash="getData(currentPage)" v-if="item.status === 0" v-bind:id="item.id"
+                             v-bind:total="item.total"></v-pay>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -61,6 +64,7 @@
           </v-card>
         </v-container>
       </v-container>
+      <v-pager :total="totalPages" :current="currentPage" @goPage="goPage"></v-pager>
     </v-content>
     <v-foot></v-foot>
   </v-app>
@@ -70,22 +74,30 @@
   import vHeader from '../common/v-header'
   import vFoot from '../common/v-foot'
   import vSidebar from '../common/v-sidebar'
+  import vPager from '../common/v-pager'
+  import vPay from './v-pay'
 
   export default {
     name: "v-orderList",
-    components: {vHeader, vSidebar, vFoot},
+    components: {vHeader, vSidebar, vFoot, vPager, vPay},
     data() {
       return {
-        items: []
+        items: [],
+        currentPage: 1,
+        totalPages: 1
       }
     },
     methods: {
-      getData() {
+      getData(pageIndex) {
         let me = this
+        this.currentPage = pageIndex
         // 准备请求
         const options = {
           method: 'GET',
           headers: {'access_token': sessionStorage.getItem('access_token')},
+          params: {
+            page: pageIndex
+          },
           url: this.$axios.defaults.baseURL + '/order/'
         }
 
@@ -93,6 +105,7 @@
         this.$axios(options).then(function (response) {
           if (response.data.code === 200) {
             me.items = response.data.data
+            me.totalPages = parseInt(response.data.message)
           } else {
             console.log('认证失败')
             me.$router.push('/login')
@@ -125,16 +138,25 @@
         }
         return status
       },
+      goPage(index) {
+        this.getData(index)
+      },
       getProduct(productNum) {
         this.$router.push('/product/p/' + productNum)
       },
       getTime(ms) {
         // toLocaleString
         return new Date(ms).toLocaleString()
+      },
+      goDatail(id) {
+        this.$router.push('/order/' + id)
+      },
+      pay(id) {
+        this.$router.push('/order/pay/' + id)
       }
     },
     created() {
-      this.getData()
+      this.getData(1)
     }
   }
 </script>
@@ -142,10 +164,6 @@
 <style scoped>
   .bg {
     background-color: whitesmoke;
-  }
-
-  .status {
-    font-weight: bold;
   }
 
   .productName {
@@ -167,7 +185,7 @@
     border-right: 1px solid lightgrey;
   }
 
-  img {
+  img:hover {
     cursor: pointer;
   }
 </style>
