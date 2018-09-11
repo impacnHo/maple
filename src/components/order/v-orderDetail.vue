@@ -16,7 +16,7 @@
                     <v-layout row wrap align-center>
                       <v-flex lg6 md6 sm12 xs12>
                         订单状态：<span class="font-weight-bold">{{getStatus(item.status)}}</span>
-                        <v-btn v-if="item.status === 0" small color="blue darken-3" class="white--text" @click="pay(item.id)">为订单支付</v-btn>
+                        <v-pay v-if="item.status === 0" v-bind:id="item.id" v-bind:total="item.total" v-on:flash="getData"></v-pay>
                       </v-flex>
                       <v-flex lg6 md6 sm12 xs12>
                         创建时间：<span class="font-weight-bold">{{getTime(item.createTime)}}</span>
@@ -99,10 +99,11 @@
   import vHeader from '../common/v-header'
   import vFoot from '../common/v-foot'
   import vSidebar from '../common/v-sidebar'
+  import vPay from './v-pay'
 
   export default {
     name: "v-orderDetail",
-    components: {vHeader, vSidebar, vFoot},
+    components: {vHeader, vSidebar, vFoot, vPay},
     data() {
       return {
         item:[]
