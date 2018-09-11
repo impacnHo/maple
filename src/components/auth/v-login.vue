@@ -68,8 +68,14 @@
         }
         this.$axios(options).then(function (response) {
           if (response.data.data != null) {
+            // 保存用户名和token到sessionStotage
             sessionStorage.setItem('access_token', response.data.data)
             sessionStorage.setItem('username', me.userRegistry.username)
+            // 保存用户名和token到vuex
+            me.$store.dispatch('updateLoginStatus', {
+              username: me.userRegistry.username,
+              token: response.data.data
+            })
             me.$router.push('/')
           } else {
             console.log('登录失败：' + response.data.message)

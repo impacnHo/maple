@@ -22,7 +22,7 @@
         <v-toolbar-title slot="activator">
           <v-icon dark>arrow_drop_down</v-icon>
         </v-toolbar-title>
-        <v-list v-if="logged">
+        <v-list v-if="!this.$store.getters.loginState">
           <v-list-tile @click="go('/login')">
             <v-list-tile-title><i class="fas fa-sign-in-alt mr-2"></i>登录</v-list-tile-title>
           </v-list-tile>
@@ -48,16 +48,22 @@
     data() {
       return {
         keyword: '',
-        username: sessionStorage.getItem('username'),
+        username: '',
       }
     },
     methods: {
+      getData() {
+        this.username = this.$store.getters.username
+      },
       go(to) {
         this.$router.push(to)
       },
       logout() {
+        // 在sessionStorage中删除
         sessionStorage.removeItem('access_token')
         sessionStorage.removeItem('username')
+        // 在vuex中删除
+        this.$store.dispatch('updateLoginStatus', null)
         this.$router.push('/login')
       },
       toggle() {
@@ -72,10 +78,16 @@
         })
       }
     },
-    computed: {
-      logged() {
-        return sessionStorage.getItem('username') == null ? true : false
+    created() {
+      if(sessionStorage.getItem('username') && sessionStorage.getItem('access_token')) {
+        this.$store.commit('loginStatus', {
+          username: sessionStorage.getItem('username'),
+          token: sessionStorage.getItem('access_token')
+        })
+      } else {
+        this.$store.commit('loginStatus', null)
       }
+      this.getData()
     },
     mounted() {
       let me = this;

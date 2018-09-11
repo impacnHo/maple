@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import Router from 'vue-router'
 import Index from '../components/v-index'
 import ProductList from '../components/product/v-productList'
@@ -15,6 +16,7 @@ import OrderDetail from '../components/order/v-orderDetail'
 import PayForOrder from '../components/order/v-pay'
 
 Vue.use(Router)
+Vue.use(Vuex)
 
 const router =  new Router({
   routes: [
