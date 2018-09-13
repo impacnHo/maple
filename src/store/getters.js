@@ -4,6 +4,11 @@ export const username = state => {
 }
 
 // 获取当前是否登录
-export const loginState = state => {
+export const loginStatus = state => {
   return state.loginState
+}
+
+// 获取当前sideBar开光
+export const sideBarStatus = state => {
+  return state.sideBar
 }

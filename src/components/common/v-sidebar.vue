@@ -4,12 +4,18 @@
       <v-list-group v-for="item in items" v-model="item.active" :key="item.title">
         <v-list-tile slot="activator">
           <v-list-tile-content>
-            <v-list-tile-title><span class="ml-1 mr-3"><i :class="item.action"></i></span>{{item.title}}</v-list-tile-title>
+            <v-list-tile-title>
+              <span class="ml-1 mr-3">
+                <i :class="item.action"></i>
+              </span>{{item.title}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile v-for="subItem in item.items" :key="subItem.title" @click="view(subItem.to)">
           <v-list-tile-content>
-            <v-list-tile-title><span class="mx-3"><i :class="subItem.action"></i></span>{{subItem.title}}</v-list-tile-title>
+            <v-list-tile-title>
+              <span class="mx-3">
+                <i :class="subItem.action"></i>
+              </span>{{subItem.title}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list-group>
@@ -71,6 +77,16 @@
         ]
       }
     },
+    // computed: {
+    //   sideBar: {
+    //     get() {
+    //       return this.$store.getters.sideBarStatus
+    //     },
+    //     set(newValue) {
+
+    //     }
+    //   }
+    // },
     methods: {
       view(src) {
         Bus.$emit('clear-keyword');
@@ -82,10 +98,10 @@
       Bus.$on('toggle-sidebar', function () {
         me.drawer = !me.drawer
       })
+      // this.drawer = this.$store.getters.sideBarStatus
     }
   }
 </script>
 
 <style scoped>
-
 </style>

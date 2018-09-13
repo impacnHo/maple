@@ -7,9 +7,17 @@ export const loginStatus = (state, user) => {
     state.loginState = true
   } else {
     // 登出
-    sessionStorage.removeItem('access_token') // or setItem('access_token', '')
+    window.sessionStorage.removeItem('access_token') // or setItem('access_token', '')
     state.username = null
     state.loginState = false
     state.token = null
   }
 }
+
+// 更改侧导航栏的状态
+// export const sideBarStatus = state => {
+//   console.log('mutations: toggle，当前状态：' + state.sideBar)
+//   state.sideBar = !state.sideBar
+
+//   console.log('最终状态：' + state.sideBar)
+// }

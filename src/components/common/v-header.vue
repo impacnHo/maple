@@ -9,33 +9,17 @@
     <v-toolbar-title class="hidden-sm-and-down">Trophy Room</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-flex>
-      <v-text-field @keyup.enter="search" class="mt-4" v-model="keyword" color="white" label="搜索商品"
-                    prepend-icon="search" clearable></v-text-field>
+      <v-text-field @keyup.enter="search" class="mt-4" v-model="keyword" color="white" label="搜索商品" prepend-icon="search" clearable></v-text-field>
     </v-flex>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat>
+      <v-btn flat @click="go()">
         <v-icon>account_circle</v-icon>
         <span class="ml-2 hidden-sm-and-down">{{username}}</span>
       </v-btn>
-      <v-menu :nudge-width="100">
-        <v-toolbar-title slot="activator">
-          <v-icon dark>arrow_drop_down</v-icon>
-        </v-toolbar-title>
-        <v-list v-if="!this.$store.getters.loginState">
-          <v-list-tile @click="go('/login')">
-            <v-list-tile-title><i class="fas fa-sign-in-alt mr-2"></i>登录</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile @click="go('/logup')">
-            <v-list-tile-title><i class="fas fa-user-plus mr-2"></i>注册</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-        <v-list v-else>
-          <v-list-tile @click="logout">
-            <v-list-tile-title><i class="fas fa-sign-out-alt mr-2"></i>注销</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
+      <v-btn flat @click="logout">
+        <v-icon>power_settings_new</v-icon>
+      </v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>
@@ -55,8 +39,12 @@
       getData() {
         this.username = this.$store.getters.username
       },
-      go(to) {
-        this.$router.push(to)
+      go() {
+        if(this.$store.getters.loginStatus === false) {
+          this.$router.push('/login')
+        } else {
+          this.$router.push('/order/')
+        }
       },
       logout() {
         // 在sessionStorage中删除
@@ -67,7 +55,10 @@
         this.$router.push('/login')
       },
       toggle() {
+        // 切换sideBar状态
         Bus.$emit('toggle-sidebar');
+        // console.log('点击切换')
+        // this.$store.dispatch('toggleSideBarStatus')
       },
       search() {
         this.$router.push({
@@ -90,7 +81,7 @@
       this.getData()
     },
     mounted() {
-      let me = this;
+      let me = this
       Bus.$on('clear-keyword', function () {
         me.keyword = ''
       })
@@ -99,5 +90,4 @@
 </script>
 
 <style scoped>
-
 </style>

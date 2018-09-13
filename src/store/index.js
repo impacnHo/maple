@@ -11,6 +11,7 @@ export default new Vuex.Store({
     username: null,
     loginState: false,
     token: null
+    // sideBar: false
   },
   getters,
   mutations,

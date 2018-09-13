@@ -46,8 +46,8 @@
                   </v-flex>
                   <v-flex lg2 md2 sm2 xs2><span class="sizeName">&yen;{{item.price}}</span></v-flex>
                   <v-flex lg2 md2 sm2 xs2>
-                    <v-text-field type="number" v-model.lazy="item.quanlity" @blur="updateCart(item.id)" min="1"
-                                  :max="item.maxQuanlity" class="mt-4" solo></v-text-field>
+                    <v-text-field class="mt-4" type="number" v-model.lazy="item.quanlity" @blur="updateCart(item.id)" min="1"
+                                  :max="item.maxQuanlity" solo></v-text-field>
                   </v-flex>
                   <v-flex lg1 md1 sm1 xs1>
                     <v-btn outline small fab color="red" @click="removeCart(item.id)">
