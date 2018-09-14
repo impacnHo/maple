@@ -72,7 +72,7 @@
             sessionStorage.setItem('access_token', response.data.data)
             sessionStorage.setItem('username', me.userRegistry.username)
             // 保存用户名和token到vuex
-            me.$store.dispatch('updateLoginStatus', {
+            me.$store.commit('updateLoginStatus', {
               username: me.userRegistry.username,
               token: response.data.data
             })

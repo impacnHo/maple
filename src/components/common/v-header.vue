@@ -13,9 +13,15 @@
     </v-flex>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat @click="go()">
+      <v-btn flat @click="go('/order')">
         <v-icon>account_circle</v-icon>
         <span class="ml-2 hidden-sm-and-down">{{username}}</span>
+      </v-btn>
+      <v-btn flat @click="go('/user/cart')">
+        <v-badge color="red darken-2">
+          <span slot="badge" v-if="cartListSize>0">{{cartListSize}}</span>
+          <v-icon>shopping_cart</v-icon>
+        </v-badge>
       </v-btn>
       <v-btn flat @click="logout">
         <v-icon>power_settings_new</v-icon>
@@ -35,16 +41,17 @@
         username: '',
       }
     },
+    computed: {
+      cartListSize() {
+        return this.$store.getters.cartListSize === undefined ? 0 : this.$store.getters.cartListSize
+      }
+    },
     methods: {
       getData() {
         this.username = this.$store.getters.username
       },
-      go() {
-        if(this.$store.getters.loginStatus === false) {
-          this.$router.push('/login')
-        } else {
-          this.$router.push('/order/')
-        }
+      go(path) {
+        this.$router.push(path)
       },
       logout() {
         // 在sessionStorage中删除
@@ -71,12 +78,12 @@
     },
     created() {
       if(sessionStorage.getItem('username') && sessionStorage.getItem('access_token')) {
-        this.$store.commit('loginStatus', {
+        this.$store.commit('updateLoginStatus', {
           username: sessionStorage.getItem('username'),
           token: sessionStorage.getItem('access_token')
         })
       } else {
-        this.$store.commit('loginStatus', null)
+        this.$store.commit('updateLoginStatus', null)
       }
       this.getData()
     },

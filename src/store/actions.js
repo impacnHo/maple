@@ -1,6 +1,6 @@
 // 应用mutations
 export const updateLoginStatus = ({ commit }, user) => {
-  commit('loginStatus', user)
+  commit('updateLoginStatus', user)
 }
 
 // export const toggleSideBarStatus = ({ commit }) => {

@@ -102,7 +102,7 @@
         let api = '/product/p/' + productNum
         this.$axios.get(api).then(function (response) {
           let items = response.data.data
-
+          
           me.itemsForOprt.productNum = items.productNum
           me.itemsForOprt.brandName = items.brandName
           me.itemsForOprt.name = items.name

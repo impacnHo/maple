@@ -4,17 +4,18 @@
       <v-container text-left>
         <h5 class="font-weight-light">{{brandName}}</h5>
         <h4 class="font-italic">{{name}} {{subName}}</h4>
-        <h6><span class="badge badge-dark">CNY</span> {{priceStr}}</h6>
+        <h6>
+          <span class="badge badge-dark">CNY</span> {{priceStr}}</h6>
         <v-divider></v-divider>
         <h5>尺码</h5>
         <v-radio-group v-if="!soldOut" v-model="row" row>
-          <v-radio color="blue darken-3" v-for="item in stocks" :key="item.id" :label="item.name"
-                   :value="item.id"></v-radio>
+          <v-radio color="blue darken-3" v-for="item in stocks" :key="item.id" :label="item.name" :value="item.id"></v-radio>
         </v-radio-group>
         <h5 v-else class="soldOut">售罄</h5>
-        <v-text-field type="number" min="1" :max="this.maxQuanlity" v-model.lazy="inputQuanlity" label="数量"
-                      outline @blur="format"></v-text-field>
-        <h6>剩余量：<strong>{{maxQuanlity}}</strong></h6>
+        <v-text-field type="number" min="1" :max="this.maxQuanlity" v-model.lazy="inputQuanlity" label="数量" outline @blur="format"></v-text-field>
+        <h6>剩余量：
+          <strong>{{maxQuanlity}}</strong>
+        </h6>
         <v-btn block large :disabled="allowAddtoCart" color="blue darken-3" class="white--text" @click="addToCart">
           添加购物车
         </v-btn>
@@ -26,7 +27,7 @@
 <script>
   export default {
     name: "v-operator",
-    props: ['brandName', 'name', 'subName', 'price', 'stocks'],
+    props: ['brandName', 'name', 'subName', 'productNum', 'price', 'stocks'],
     data() {
       return {
         row: null,
@@ -75,7 +76,9 @@
       },
       // 点击“添加购物车方法”
       addToCart() {
-        // 准备数据 Stock大小写
+        let me = this
+
+        // 准备数据
         let cartDTO = {
           stockId: this.row,
           quanlity: parseInt(this.inputQuanlity)
@@ -93,9 +96,23 @@
         this.$axios(options).then(function (response) {
           if (response.data.code === 200) {
             alert('添加购物车成功')
+            // 更新vuex的cartList
+            let cart = {
+              id: parseInt(response.data.message),
+              maxQuanlity: me.maxQuanlity,
+              name: me.name,
+              price: me.price,
+              productNum: me.productNum,
+              quanlity: me.inputQuanlity,
+              stockId: me.row,
+              stockName: me.getStockName(me.row),
+              subName: me.subName
+            }
+            let cartList = me.$store.getters.cartList
+            cartList.push(cart)
+            me.$store.commit('updateCartList', cartList)
           } else {
             alert('认证失败')
-            me.$router.push('/login')
           }
         }).catch(function (error) {
           console.log(error)
@@ -107,6 +124,13 @@
           this.inputQuanlity = 1
         if (val > this.maxQuanlity)
           this.inputQuanlity = this.maxQuanlity
+      },
+      getStockName(stockId) {
+        for(let i = 0;i < this.stocks.length;i++) {
+          if(stockId === this.stocks[i].id) {
+            return this.stocks[i].name
+          }
+        }
       }
     },
     watch: {
@@ -124,7 +148,7 @@
 </script>
 
 <style scoped>
-  .soldOut {
-    color: grey;
-  }
+.soldOut {
+  color: grey;
+}
 </style>

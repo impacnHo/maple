@@ -36,18 +36,18 @@
                     <v-checkbox color="blue darken-3" :value="item.id" v-model="select"></v-checkbox>
                   </v-flex>
                   <v-flex lg2 md2 sm2 xs2>
-                    <img class="img-fluid" @click="getProduct(item.productNum)"
-                         :src="'http://pbw790ert.bkt.clouddn.com/product/' + item.productNum +'.jpg'">
+                    <img class="img-fluid" @click="getProduct(item.productNum)" :src="'http://pbw790ert.bkt.clouddn.com/product/' + item.productNum +'.jpg'">
                   </v-flex>
                   <v-flex lg3 md3 sm3 xs3>
                     <span class="productName">{{item.name}} {{item.subName}}</span>
                     <br>
                     <span class="sizeName">{{item.stockName}}</span>
                   </v-flex>
-                  <v-flex lg2 md2 sm2 xs2><span class="sizeName">&yen;{{item.price}}</span></v-flex>
                   <v-flex lg2 md2 sm2 xs2>
-                    <v-text-field class="mt-4" type="number" v-model.lazy="item.quanlity" @blur="updateCart(item.id)" min="1"
-                                  :max="item.maxQuanlity" solo></v-text-field>
+                    <span class="sizeName">&yen;{{item.price}}</span>
+                  </v-flex>
+                  <v-flex lg2 md2 sm2 xs2>
+                    <v-text-field class="mt-4" type="number" v-model.lazy="item.quanlity" @blur="updateCart(item.id)" min="1" :max="item.maxQuanlity" solo></v-text-field>
                   </v-flex>
                   <v-flex lg1 md1 sm1 xs1>
                     <v-btn outline small fab color="red" @click="removeCart(item.id)">
@@ -64,11 +64,12 @@
           <v-card>
             <v-card-title>
               <v-spacer></v-spacer>
-              <h6>已选 <span class="highlight">{{select.length}}</span> 件商品 | 合计 <span
-                class="highlight">&yen;{{total}}</span></h6>
+              <h6>已选
+                <span class="highlight">{{select.length}}</span> 件商品 | 合计
+                <span class="highlight">&yen;{{total}}</span>
+              </h6>
               <v-spacer></v-spacer>
-              <v-btn large color="blue darken-3" class="white--text" @click="checkout"
-                     :disabled="this.select.length===0">结算
+              <v-btn large color="blue darken-3" class="white--text" @click="checkout" :disabled="this.select.length===0">结算
               </v-btn>
             </v-card-title>
           </v-card>
@@ -97,17 +98,19 @@
     },
     methods: {
       getData() {
-        this.items = []
         let me = this
+        // 准备请求
         const options = {
           method: 'GET',
           headers: {'access_token': sessionStorage.getItem('access_token')},
           url: this.$axios.defaults.baseURL + '/cart/'
         }
 
+        // 发送请求
         this.$axios(options).then(function (response) {
           if (response.data.code === 200) {
             me.items = response.data.data
+            me.$store.commit('updateCartList', me.items)
           } else {
             alert('认证失败')
             me.$router.push('/login')
@@ -159,9 +162,17 @@
         this.$axios(options).then(function (response) {
           if (response.data.code === 200) {
             console.log('修改成功')
+            // 更新Vuex
+            let cartList = me.$store.getters.cartList
+            for(let i = 0;i < cartList.length;i++) {
+              if(cartList[i].id === cartDTO.stockId) {
+                cartList[i].quanlity = cartDTO.quanlity
+                break
+              }
+            }
+            me.$store.commit('updateCartList', cartList)
           } else {
             console.log('认证失败')
-            me.$router.push('/login')
           }
         }).catch(function (error) {
           console.log(error)
@@ -180,10 +191,17 @@
         this.$axios(options).then(function (response) {
           if (response.data.code === 200) {
             console.log('删除成功')
-            me.getData()
+            // 更新vuex
+            let cartList = me.$store.getters.cartList
+            for(let i = 0;i < cartList.length;i++) {
+              if(cartList[i].id === id) {
+                cartList.splice(i, 1)
+                break
+              }
+            }
+            me.$store.commit('updateCartList', cartList)
           } else {
             console.log('认证失败')
-            me.$router.push('/login')
           }
         }).catch(function (error) {
           console.log(error)
@@ -239,23 +257,23 @@
 </script>
 
 <style scoped>
-  .productName {
-    font-style: italic;
-    font-size: large;
-  }
+.productName {
+  font-style: italic;
+  font-size: large;
+}
 
-  .sizeName {
-    font-weight: bold;
-    font-size: medium;
-  }
+.sizeName {
+  font-weight: bold;
+  font-size: medium;
+}
 
-  img:hover {
-    cursor: pointer;
-  }
+img:hover {
+  cursor: pointer;
+}
 
-  .highlight {
-    font-size: large;
-    color: #1565C0;
-    font-weight: bold;
-  }
+.highlight {
+  font-size: large;
+  color: #1565c0;
+  font-weight: bold;
+}
 </style>

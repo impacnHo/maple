@@ -1,5 +1,5 @@
 // 更改用户登录状态
-export const loginStatus = (state, user) => {
+export const updateLoginStatus = (state, user) => {
   if (user) {
     // 登录
     state.username = user.username
@@ -12,6 +12,11 @@ export const loginStatus = (state, user) => {
     state.loginState = false
     state.token = null
   }
+}
+
+// 更改购物车列表
+export const updateCartList = (state, cartList) => {
+  state.cartList = cartList
 }
 
 // 更改侧导航栏的状态
