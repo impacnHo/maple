@@ -4,7 +4,7 @@ export const username = state => {
 }
 
 // 获取当前是否登录
-export const loginStatus = state => {
+export const loginState = state => {
   return state.loginState
 }
 
@@ -16,6 +16,11 @@ export const cartList = state => {
 // 获取购物车列表数
 export const cartListSize = state => {
   return state.cartList.length
+}
+
+// 获取用户个人信息
+export const profile = state => {
+  return state.profile
 }
 
 // 获取当前sideBar开光

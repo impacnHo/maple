@@ -76,47 +76,55 @@
       },
       // 点击“添加购物车方法”
       addToCart() {
-        let me = this
-
-        // 准备数据
-        let cartDTO = {
-          stockId: this.row,
-          quanlity: parseInt(this.inputQuanlity)
-        }
-
-        // 准备请求
-        const options = {
-          method: 'POST',
-          headers: {'access_token': sessionStorage.getItem('access_token')},
-          url: this.$axios.defaults.baseURL + '/cart/',
-          data: cartDTO
-        }
-
-        // 发送请求
-        this.$axios(options).then(function (response) {
-          if (response.data.code === 200) {
-            alert('添加购物车成功')
-            // 更新vuex的cartList
-            let cart = {
-              id: parseInt(response.data.message),
-              maxQuanlity: me.maxQuanlity,
-              name: me.name,
-              price: me.price,
-              productNum: me.productNum,
-              quanlity: me.inputQuanlity,
-              stockId: me.row,
-              stockName: me.getStockName(me.row),
-              subName: me.subName
+        // 检查是否已登录
+        if(this.$store.getters.loginState === false) {
+          this.$router.push({
+            path: '/login',
+            query: {
+              redirect: '/product/p/' + this.productNum
             }
-            let cartList = me.$store.getters.cartList
-            cartList.push(cart)
-            me.$store.commit('updateCartList', cartList)
-          } else {
-            alert('认证失败')
+          })
+        } else {
+          // 准备数据
+          let cartDTO = {
+            stockId: this.row,
+            quanlity: parseInt(this.inputQuanlity)
           }
-        }).catch(function (error) {
-          console.log(error)
-        })
+
+          // 准备请求
+          const options = {
+            method: 'POST',
+            headers: {'access_token': sessionStorage.getItem('access_token')},
+            url: this.$axios.defaults.baseURL + '/cart/',
+            data: cartDTO
+          }
+
+          // 发送请求
+          this.$axios(options).then((response) => {
+            if (response.data.code === 200) {
+              alert('添加购物车成功')
+              // 更新vuex的cartList
+              let cart = {
+                id: parseInt(response.data.message),
+                maxQuanlity: this.maxQuanlity,
+                name: this.name,
+                price: this.price,
+                productNum: this.productNum,
+                quanlity: this.inputQuanlity,
+                stockId: this.row,
+                stockName: this.getStockName(me.row),
+                subName: this.subName
+              }
+              let cartList = this.$store.getters.cartList
+              cartList.push(cart)
+              this.$store.commit('updateCartList', cartList)
+            } else {
+              alert('认证失败')
+            }
+          }).catch((error) => {
+            console.log(error)
+          })
+        }
       },
       format() {
         let val = this.inputQuanlity

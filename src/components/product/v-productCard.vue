@@ -1,7 +1,7 @@
 <template>
   <v-flex lg4 md4 sm4 xs6>
     <div class="product-card" @click="getProduct(productNum)">
-      <img class="card-img-top px-1 py-1" :src="poster" :alt="productNum">
+      <img class="card-img-top px-1 py-1" :src="'http://pbw790ert.bkt.clouddn.com/product/' + this.productNum + '.jpg'" :alt="productNum">
       <div class="card-body">
         <h6>{{name}}</h6>
         <h4 class="hidden-sm-and-down">{{subName}}</h4>
@@ -19,21 +19,18 @@
     props: ['productNum', 'name', 'subName', 'price'],
     methods: {
       getProduct(productNum) {
-        let url = 'p/' + productNum;
-        this.$router.push(url)
+        this.$router.push('p/' + productNum)
       }
     },
     computed: {
-      poster() {
-        return 'http://pbw790ert.bkt.clouddn.com/product/' + this.productNum + ".jpg"
-      },
       priceStr() {
         if(this.price.toString().length > 3) {
           let items = this.price.toString().split('')
           items.splice(1,0,', ')
           return items.join('')
+        } else {
+          return this.price.toString()
         }
-        return this.price.toString()
       }
     }
   }

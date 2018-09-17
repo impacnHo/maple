@@ -9,7 +9,7 @@ export default new Vuex.Store({
   // 定义状态
   state: {
     username: null, // 用户名
-    loginStatus: false, // 登录状态：true-已登录，false-未登录
+    loginState: false, // 登录状态：true-已登录，false-未登录
     token: null, // 口令
     cartList: [] // 购物车列
     // sideBar: false

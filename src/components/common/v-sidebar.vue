@@ -77,16 +77,6 @@
         ]
       }
     },
-    // computed: {
-    //   sideBar: {
-    //     get() {
-    //       return this.$store.getters.sideBarStatus
-    //     },
-    //     set(newValue) {
-
-    //     }
-    //   }
-    // },
     methods: {
       view(src) {
         Bus.$emit('clear-keyword');

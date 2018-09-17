@@ -4,7 +4,7 @@
     <v-header></v-header>
     <v-content class="bg">
       <v-container grid-list-lg text-center>
-        <v-layout row wrap v-if="hasData">
+        <v-layout row wrap v-if="this.list.length>0">
           <v-product-card class="my-2" v-for="item in list" :key="item.productNum" v-bind="item"></v-product-card>
         </v-layout>
         <v-layout row wrap v-else>
@@ -31,51 +31,44 @@
     data() {
       return {
         // 浏览方式api、数据列表、当前页数、总页数
-        api: '/product',
         list: [],
         currentPage: 1,
         totalPages: 1,
-        hasData: true,
       }
     },
     methods: {
       getData(pageIndex) {
-        let me = this
-        this.hasData = true
         // 高亮当前请求页数
         this.currentPage = pageIndex
         // 获取路由中的typeName
         let typeName = this.$route.params.typeName
-        let page = pageIndex
         let keyword = this.$route.query.keyword
+        let api = '/product'
 
         // 判断是搜索还是浏览
         if (keyword !== undefined && 'search' === typeName) {
-          this.api += '/search?keyword=' + keyword
+          api += '/search?keyword=' + keyword
         } else {
           if ('all' !== typeName) {
-            this.api = this.api + '/' + typeName
+            api = api + '/' + typeName
           } else {
-            this.api += '/all'
+            api += '/all'
           }
         }
 
         // 发送请求
-        this.$axios.get(this.api, {
+        this.$axios.get(api, {
           params: {
-            page: page
+            page: pageIndex
           }
-        }).then(function (response) {
+        }).then((response) => {
           if (response.data.data.length > 0) {
-            me.list = response.data.data
+            this.list = response.data.data
           } else {
-            me.hasData = false
+            this.list = []
           }
-          me.currentPage = page
-          me.totalPages = parseInt(response.data.message)
-          // 还原api，避免参数叠加
-          me.api = '/product'
-        }).catch(function (error) {
+          this.totalPages = parseInt(response.data.message)
+        }).catch((error) => {
           console.log(error)
         })
       },

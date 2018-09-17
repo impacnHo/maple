@@ -4,11 +4,11 @@
       <v-layout justify-center row>
         <v-flex lg4 md5 sm7 xs8 text-center class="pannel" px-5 py-5>
           <div>
-            <h1 @click="goIndex">Maple Mall</h1>
+            <h1 @click="go(null)">Maple Mall</h1>
             <h4>为你搜罗全球商品</h4>
           </div>
           <div class="mt-5">
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form ref="form" v-model="valid">
               <v-text-field class="my-5" prepend-icon="account_circle"
                             v-model="userRegistry.username"
                             :rules="[rules.counterUsn,rules.validateUsn]"
@@ -34,7 +34,7 @@
               </v-btn>
             </v-form>
           </div>
-          <h5>已有账户？<span @click="goLogin">登录</span></h5>
+          <h5>已有账户？<span @click="go('login')">登录</span></h5>
         </v-flex>
       </v-layout>
     </v-container>
@@ -63,6 +63,7 @@
     },
     methods: {
       logup() {
+        // 准备数据
         let options = {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
@@ -70,17 +71,20 @@
           data: this.userRegistry
         }
 
-        this.$axios(options).then(function (response) {
+        // 发送请求
+        this.$axios(options).then((response) => {
           alert(response.data.message)
-        }).catch(function (error) {
+          this.$router.push('/login')
+        }).catch((error) => {
           console.log(error)
         })
       },
-      goLogin() {
-        this.$router.push('/login')
-      },
-      goIndex() {
-        this.$router.push('/')
+      go(name) {
+        if(name === null) {
+          this.$router.push('/')
+        } else {
+          this.$router.push('/' + name)
+        }
       }
     }
   }

@@ -4,11 +4,11 @@
       <table class="table text-center table-hover table-sm">
         <thead>
         <tr>
-          <th v-for="item in headers">{{item}}</th>
+          <th v-for="item in headers" :key="item.index">{{item}}</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in size">
+        <tr v-for="item in size" :key="item.index">
           <td>{{item.us}}</td>
           <td>{{item.eu}}</td>
           <td>{{item.uk}}</td>

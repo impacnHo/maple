@@ -38,7 +38,7 @@
     data() {
       return {
         keyword: '',
-        username: '',
+        username: this.$store.getters.username
       }
     },
     computed: {
@@ -50,15 +50,17 @@
       getData() {
         this.username = this.$store.getters.username
       },
-      go(path) {
-        this.$router.push(path)
+      go(name) {
+        this.$router.push(name)
       },
       logout() {
         // 在sessionStorage中删除
         sessionStorage.removeItem('access_token')
         sessionStorage.removeItem('username')
         // 在vuex中删除
-        this.$store.dispatch('updateLoginStatus', null)
+        this.$store.commit('updateLoginState', null)
+        this.$store.commit('updateCartList', [])
+        this.$store.commit('updateProfile', null)
         this.$router.push('/login')
       },
       toggle() {
@@ -77,20 +79,11 @@
       }
     },
     created() {
-      if(sessionStorage.getItem('username') && sessionStorage.getItem('access_token')) {
-        this.$store.commit('updateLoginStatus', {
-          username: sessionStorage.getItem('username'),
-          token: sessionStorage.getItem('access_token')
-        })
-      } else {
-        this.$store.commit('updateLoginStatus', null)
-      }
-      this.getData()
+      //this.getData()
     },
     mounted() {
-      let me = this
-      Bus.$on('clear-keyword', function () {
-        me.keyword = ''
+      Bus.$on('clear-keyword', () => {
+        this.keyword = ''
       })
     }
   }

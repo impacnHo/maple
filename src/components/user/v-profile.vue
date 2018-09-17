@@ -7,7 +7,7 @@
         <v-container>
           <v-card>
             <v-container>
-              <h3>我的档案</h3>
+              <h3>我的档案{{this.$store.getters.profile}}</h3>
               <v-divider></v-divider>
               <v-container>
                 <v-layout wrap row>
@@ -18,7 +18,7 @@
                     </h5>
                   </v-flex>
                   <v-flex lg5 md5 sm5 xs5>
-                    <v-text-field v-model="userInfo.name" :counter='4'></v-text-field>
+                    <v-text-field v-model="profile.name" :counter='4'></v-text-field>
                   </v-flex>
                 </v-layout>
                 <v-layout wrap row>
@@ -29,7 +29,7 @@
                     </h5>
                   </v-flex>
                   <v-flex lg5 md5 sm5 xs5>
-                    <v-radio-group v-model="userInfo.sex" row>
+                    <v-radio-group v-model="profile.sex" row>
                       <v-radio color="blue darken-3" :key='1' label='男' value='1'></v-radio>
                       <v-radio color="blue darken-3" :key='0' label='女' value='0'></v-radio>
                     </v-radio-group>
@@ -43,7 +43,7 @@
                     </h5>
                   </v-flex>
                   <v-flex lg5 md5 sm5 xs5>
-                    <v-text-field v-model="userInfo.location"></v-text-field>
+                    <v-text-field v-model="profile.location"></v-text-field>
                   </v-flex>
                 </v-layout>
                 <v-layout wrap row>
@@ -54,25 +54,9 @@
                     </h5>
                   </v-flex>
                   <v-flex lg5 md5 sm5 xs5>
-                    <v-menu
-                      ref="dateMenu"
-                      :close-on-content-click="false"
-                      v-model="dateMenu"
-                      :nudge-right="40"
-                      :return-value.sync="userInfo.birth"
-                      lazy
-                      transition="scale-transition"
-                      offset-y
-                      full-width
-                      min-width="290px"
-                    >
-                      <v-text-field
-                        slot="activator"
-                        v-model="userInfo.birth"
-                        readonly
-                      ></v-text-field>
-                      <v-date-picker v-model="userInfo.birth"
-                                     @input="$refs.dateMenu.save(userInfo.birth)"></v-date-picker>
+                    <v-menu ref="dateMenu" :close-on-content-click="false" v-model="dateMenu" :nudge-right="40" :return-value.sync="profile.birth" lazy transition="scale-transition" offset-y full-width min-width="290px">
+                      <v-text-field slot="activator" v-model="profile.birth" readonly></v-text-field>
+                      <v-date-picker v-model="profile.birth" @input="$refs.dateMenu.save(profile.birth)"></v-date-picker>
                     </v-menu>
                   </v-flex>
                 </v-layout>
@@ -102,7 +86,7 @@
         valid: false,
         dateMenu: false,
         row: '1',
-        userInfo: {
+        profile: {
           name: '',
           sex: '',
           birth: '',
@@ -112,21 +96,33 @@
     },
     methods: {
       getData() {
-        let me = this;
-        let token = sessionStorage.getItem('access_token')
-        const options = {
-          method: 'GET',
-          headers: {'access_token': token},
-          url: this.$axios.defaults.baseURL + '/userInfo/'
+        // 判断vuex是否存在
+        // getters获取为undefined？
+        if(this.$store.state.profile === undefined) {
+          console.log('不存在')
+          // 准备数据
+          const options = {
+            method: 'GET',
+            headers: {'access_token': sessionStorage.getItem('access_token')},
+            url: this.$axios.defaults.baseURL + '/userInfo/'
+          }
+
+          // 发送数据
+          this.$axios(options).then(response => {
+            this.profile = response.data.data
+            // 数据转换
+            this.profile.sex = this.getSex(this.profile.sex)
+            this.profile.birth = this.getDate(this.profile.birth)
+            // 存入vuex
+            this.$store.commit('updateProfile', this.profile)
+          }).catch(error => {
+            console.log(error)
+          })
+        } else {
+          console.log('已存在')
+          this.profile = this.$store.state.profile
         }
-        this.$axios(options).then(function (response) {
-          me.userInfo = response.data.data
-          // 数据转换
-          me.userInfo.sex = me.getSex(me.userInfo.sex)
-          me.userInfo.birth = me.getDate(me.userInfo.birth)
-        }).catch(function (error) {
-          console.log(error)
-        })
+        
       },
       getSex(flag) {
         if (typeof flag === "boolean") {
@@ -141,35 +137,41 @@
         return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay()
       },
       updateUserInfo() {
-        let token = sessionStorage.getItem('access_token')
-        if (!token) {
-          this.$router.push('/login')
-        }
-        // 数据转换
-        let data = {
-          name: this.userInfo.name,
-          sex: this.getSex(this.userInfo.sex),
-          birth: new Date(this.userInfo.birth),
-          location: this.userInfo.location
-        }
+        if(this.$store.getters.loginState === false) {
+          this.$router.push({
+            path: '/login',
+            query: {
+              redirect: '/userInfo/profile'
+            }
+          })
+        } else {
+          // 数据转换
+          let data = {
+            name: this.profile.name,
+            sex: this.getSex(this.profile.sex),
+            birth: new Date(this.profile.birth),
+            location: this.profile.location
+          }
 
-        const options = {
-          method: 'PATCH',
-          headers: {'access_token': sessionStorage.getItem('access_token')},
-          url: this.$axios.defaults.baseURL + '/userInfo/',
-          data: data
+          // 准备请求
+          const options = {
+            method: 'PATCH',
+            headers: {'access_token': sessionStorage.getItem('access_token')},
+            url: this.$axios.defaults.baseURL + '/userInfo/',
+            data: data
+          }
+        
+          // 发送请求
+          this.$axios(options).then(response => {
+            console.log('result = ' + response.data.data)
+            if (response.data.data === true)
+              alert('提交成功')
+            else
+              alert('提交失败')
+          }).catch(error => {
+            console.log(error)
+          })
         }
-
-        this.$axios(options).then(function (response) {
-          console.log('result = ' + response.data.data)
-          if (response.data.data === true)
-            alert('提交成功')
-          else
-            alert('提交失败')
-        }).catch(function (error) {
-          console.log(error)
-        })
-
       }
     },
     created() {
@@ -179,7 +181,7 @@
 </script>
 
 <style scoped>
-  .bg {
-    background-color: whitesmoke;
-  }
+.bg {
+  background-color: whitesmoke;
+}
 </style>
