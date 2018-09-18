@@ -85,7 +85,7 @@
   import vHeader from '../common/v-header'
   import vFoot from '../common/v-foot'
   import vSidebar from '../common/v-sidebar'
-  import {mapState, mapMutations} from 'vuex'
+  import {mapState, mapMutations, mapGetters} from 'vuex'
 
   export default {
     name: "v-cartList",
@@ -118,7 +118,6 @@
       getData() {
         if(this.cartList === null) {
           // null - 未曾获取过数据， array[0] - 获取过数据但数据大小为0
-          console.log('从服务器获取')
           // 准备请求
           const options = {
             method: 'GET',
@@ -138,7 +137,6 @@
             console.log(error)
           })
         } else {
-          console.log('从vuex中获取')
           this.items = this.cartList
         }
       },

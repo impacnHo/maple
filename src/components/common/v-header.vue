@@ -20,6 +20,7 @@
       <v-btn flat @click="go('/user/cart')">
         <v-badge color="red darken-2">
           <span slot="badge" v-if="cartListSize>0">{{cartListSize}}</span>
+          <span slot="badge" v-else-if="cookieCartSize !== undefined">{{cookieCartSize}}</span>
           <v-icon>shopping_cart</v-icon>
         </v-badge>
       </v-btn>
@@ -38,7 +39,8 @@
     name: "v-header",
     data() {
       return {
-        keyword: this.$route.query.keyword
+        keyword: this.$route.query.keyword,
+        cookieCartSize: $.cookie('cartListSize')
       }
     },
     computed: {
@@ -51,6 +53,8 @@
         this.$router.push(name)
       },
       logout() {
+        // 保存购物车数量到cookie
+        $.cookie('cartListSize', this.cartListSize)
         // 在sessionStorage中删除
         sessionStorage.removeItem('access_token')
         sessionStorage.removeItem('username')
