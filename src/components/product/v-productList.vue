@@ -24,6 +24,7 @@
   import vProductCard from './v-productCard'
   import vPager from '../common/v-pager'
   import vNotFound from '../common/v-notFound'
+import { mapState } from 'vuex';
 
   export default {
     name: "v-productList",
@@ -35,6 +36,9 @@
         currentPage: 1,
         totalPages: 1,
       }
+    },
+    computed: {
+      ...mapState(['keyword'])
     },
     methods: {
       getData(pageIndex) {

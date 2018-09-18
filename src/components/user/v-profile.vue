@@ -96,10 +96,7 @@
     },
     methods: {
       getData() {
-        // 判断vuex是否存在
-        // getters获取为undefined？
-        if(this.$store.state.profile === undefined) {
-          console.log('不存在')
+        if(this.$store.state.profile === null) {
           // 准备数据
           const options = {
             method: 'GET',
@@ -119,7 +116,6 @@
             console.log(error)
           })
         } else {
-          console.log('已存在')
           this.profile = this.$store.state.profile
         }
         
@@ -163,7 +159,6 @@
         
           // 发送请求
           this.$axios(options).then(response => {
-            console.log('result = ' + response.data.data)
             if (response.data.data === true)
               alert('提交成功')
             else

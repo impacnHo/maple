@@ -4,12 +4,11 @@ export const updateLoginState = (state, user) => {
     // 登录
     state.username = user.username
     state.token = user.token
-    state.loginState = true
   } else {
     // 登出
-    window.sessionStorage.removeItem('access_token') // or setItem('access_token', '')
+    window.sessionStorage.removeItem('username')
+    window.sessionStorage.removeItem('access_token')
     state.username = null
-    state.loginState = false
     state.token = null
   }
 }

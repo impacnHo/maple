@@ -32,24 +32,21 @@
 
 <script>
   import Bus from '../bus'
+  import {mapState, mapGetters, mapMutations} from 'vuex'
 
   export default {
     name: "v-header",
     data() {
       return {
-        keyword: '',
-        username: this.$store.getters.username
+        keyword: this.$route.query.keyword
       }
     },
     computed: {
-      cartListSize() {
-        return this.$store.getters.cartListSize === undefined ? 0 : this.$store.getters.cartListSize
-      }
+      ...mapGetters(['cartListSize', 'loginState']),
+      ...mapState(['username'])
     },
     methods: {
-      getData() {
-        this.username = this.$store.getters.username
-      },
+      ...mapMutations(['updateLoginState', 'updateCartList', 'updateProfile']),
       go(name) {
         this.$router.push(name)
       },
@@ -58,9 +55,9 @@
         sessionStorage.removeItem('access_token')
         sessionStorage.removeItem('username')
         // 在vuex中删除
-        this.$store.commit('updateLoginState', null)
-        this.$store.commit('updateCartList', [])
-        this.$store.commit('updateProfile', null)
+        this.updateLoginState(null)
+        this.updateCartList(null)
+        this.updateProfile(null)
         this.$router.push('/login')
       },
       toggle() {
@@ -79,7 +76,12 @@
       }
     },
     created() {
-      //this.getData()
+      if(this.loginState === false) {
+        this.updateLoginState({
+          username: sessionStorage.getItem('username'),
+          token: sessionStorage.getItem('access_token')
+        })
+      }
     },
     mounted() {
       Bus.$on('clear-keyword', () => {

@@ -25,6 +25,8 @@
 </template>
 
 <script>
+  import {mapState, mapGetters, mapMutations} from 'vuex'
+  
   export default {
     name: "v-operator",
     props: ['brandName', 'name', 'subName', 'productNum', 'price', 'stocks'],
@@ -36,6 +38,8 @@
       }
     },
     computed: {
+      ...mapState(['cartList']),
+      ...mapGetters(['loginState']),
       // 是否可以添加购物车
       soldOut() {
         return this.maxQuanlity > 0 ? false : true
@@ -56,6 +60,7 @@
       }
     },
     methods: {
+      ...mapMutations(['updateCartList']),
       // 计算某尺码的剩余量
       getStockQlty(id) {
         let result = 0;
@@ -77,7 +82,7 @@
       // 点击“添加购物车方法”
       addToCart() {
         // 检查是否已登录
-        if(this.$store.getters.loginState === false) {
+        if(this.loginState === false) {
           this.$router.push({
             path: '/login',
             query: {
@@ -100,28 +105,31 @@
           }
 
           // 发送请求
-          this.$axios(options).then((response) => {
+          this.$axios(options).then(response => {
             if (response.data.code === 200) {
               alert('添加购物车成功')
-              // 更新vuex的cartList
-              let cart = {
-                id: parseInt(response.data.message),
-                maxQuanlity: this.maxQuanlity,
-                name: this.name,
-                price: this.price,
-                productNum: this.productNum,
-                quanlity: this.inputQuanlity,
-                stockId: this.row,
-                stockName: this.getStockName(me.row),
-                subName: this.subName
+              // 判断是否需要存入vuex
+              if(this.cartList !== null) {
+                // 更新vuex的cartList
+                let cart = {
+                  id: parseInt(response.data.message),
+                  maxQuanlity: this.maxQuanlity,
+                  name: this.name,
+                  price: this.price,
+                  productNum: this.productNum,
+                  quanlity: this.inputQuanlity,
+                  stockId: this.row,
+                  stockName: this.getStockName(this.row),
+                  subName: this.subName
+                }
+                let cartList = this.cartList
+                cartList.push(cart)
+                this.updateCartList(cartList)
               }
-              let cartList = this.$store.getters.cartList
-              cartList.push(cart)
-              this.$store.commit('updateCartList', cartList)
             } else {
               alert('认证失败')
             }
-          }).catch((error) => {
+          }).catch(error => {
             console.log(error)
           })
         }

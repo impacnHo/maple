@@ -85,6 +85,7 @@
   import vHeader from '../common/v-header'
   import vFoot from '../common/v-foot'
   import vSidebar from '../common/v-sidebar'
+  import {mapState, mapMutations} from 'vuex'
 
   export default {
     name: "v-cartList",
@@ -96,29 +97,118 @@
         items: []
       }
     },
+    computed: {
+      ...mapState(['cartList']),
+      total() {
+        let total = 0.00
+        for (let i = 0; i < this.select.length; i++) {
+          for (let j = 0; j < this.items.length; j++) {
+            if (this.select[i] === this.items[j].id) {
+              total += this.items[j].quanlity * this.items[j].price
+            }
+          }
+        }
+        return total
+      }
+    },
     methods: {
+      ...mapMutations(['updateCartList']),
+      
+      // 获取购物车列表
       getData() {
-        let me = this
+        if(this.cartList === null) {
+          // null - 未曾获取过数据， array[0] - 获取过数据但数据大小为0
+          console.log('从服务器获取')
+          // 准备请求
+          const options = {
+            method: 'GET',
+            headers: {'access_token': sessionStorage.getItem('access_token')},
+            url: this.$axios.defaults.baseURL + '/cart/'
+          }
+
+          // 发送请求
+          this.$axios(options).then(response => {
+            if (response.data.code === 200) {
+              this.items = response.data.data
+              this.updateCartList(response.data.data)
+            } else {
+              alert('认证失败')
+            }
+          }).catch(error => {
+            console.log(error)
+          })
+        } else {
+          console.log('从vuex中获取')
+          this.items = this.cartList
+        }
+      },
+
+      // 更新购物车
+      updateCart(id) {
+        // 数据准备
+        let cartDTO = this.format(id)
+
         // 准备请求
         const options = {
-          method: 'GET',
+          method: 'PATCH',
           headers: {'access_token': sessionStorage.getItem('access_token')},
-          url: this.$axios.defaults.baseURL + '/cart/'
+          url: this.$axios.defaults.baseURL + '/cart/',
+          data: cartDTO
         }
 
         // 发送请求
-        this.$axios(options).then(function (response) {
+        this.$axios(options).then(response => {
           if (response.data.code === 200) {
-            me.items = response.data.data
-            me.$store.commit('updateCartList', me.items)
+            console.log('修改成功')
+            // 更新Vuex
+            let cartList = this.cartList
+            for(let i = 0;i < cartList.length;i++) {
+              if(cartList[i].id === cartDTO.stockId) {
+                cartList[i].quanlity = cartDTO.quanlity
+                break
+              }
+            }
+            this.updateCartList(cartList)
           } else {
-            alert('认证失败')
-            me.$router.push('/login')
+            console.log('认证失败')
           }
-        }).catch(function (error) {
+        }).catch(error => {
           console.log(error)
         })
       },
+
+      // 删除购物车
+      removeCart(id) {
+        // 准备请求
+        const options = {
+          method: 'DELETE',
+          headers: {'access_token': sessionStorage.getItem('access_token')},
+          url: this.$axios.defaults.baseURL + '/cart/' + id,
+        }
+
+        // 发送请求
+        this.$axios(options).then(response => {
+          if (response.data.code === 200) {
+            console.log('删除成功')
+            // 更新vuex
+            let cartList = this.cartList
+            for(let i = 0;i < cartList.length;i++) {
+              if(cartList[i].id === id) {
+                cartList.splice(i, 1)
+                break
+              }
+            }
+            // 更新vuex
+            this.updateCartList(cartList)
+          } else {
+            console.log('认证失败')
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      },
+
+      // 商品详情
       getProduct(productNum) {
         this.$router.push('/product/p/' + productNum)
       },
@@ -144,69 +234,8 @@
         }
         return result
       },
-      updateCart(id) {
-        let me = this
 
-        // 数据准备
-        let cartDTO = this.format(id)
-
-        // 准备请求
-        const options = {
-          method: 'PATCH',
-          headers: {'access_token': sessionStorage.getItem('access_token')},
-          url: this.$axios.defaults.baseURL + '/cart/',
-          data: cartDTO
-        }
-
-        // 发送请求
-        this.$axios(options).then(function (response) {
-          if (response.data.code === 200) {
-            console.log('修改成功')
-            // 更新Vuex
-            let cartList = me.$store.getters.cartList
-            for(let i = 0;i < cartList.length;i++) {
-              if(cartList[i].id === cartDTO.stockId) {
-                cartList[i].quanlity = cartDTO.quanlity
-                break
-              }
-            }
-            me.$store.commit('updateCartList', cartList)
-          } else {
-            console.log('认证失败')
-          }
-        }).catch(function (error) {
-          console.log(error)
-        })
-      },
-      removeCart(id) {
-        let me = this
-        // 准备请求
-        const options = {
-          method: 'DELETE',
-          headers: {'access_token': sessionStorage.getItem('access_token')},
-          url: this.$axios.defaults.baseURL + '/cart/' + id,
-        }
-
-        // 发送请求
-        this.$axios(options).then(function (response) {
-          if (response.data.code === 200) {
-            console.log('删除成功')
-            // 更新vuex
-            let cartList = me.$store.getters.cartList
-            for(let i = 0;i < cartList.length;i++) {
-              if(cartList[i].id === id) {
-                cartList.splice(i, 1)
-                break
-              }
-            }
-            me.$store.commit('updateCartList', cartList)
-          } else {
-            console.log('认证失败')
-          }
-        }).catch(function (error) {
-          console.log(error)
-        })
-      },
+      // 结算
       checkout() {
         this.$router.push({
           name: 'Checkout',
@@ -214,19 +243,6 @@
             carts: this.select
           }
         })
-      }
-    },
-    computed: {
-      total() {
-        let total = 0.00
-        for (let i = 0; i < this.select.length; i++) {
-          for (let j = 0; j < this.items.length; j++) {
-            if (this.select[i] === this.items[j].id) {
-              total += this.items[j].quanlity * this.items[j].price
-            }
-          }
-        }
-        return total
       }
     },
     created() {

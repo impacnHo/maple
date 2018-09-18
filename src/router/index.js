@@ -8,17 +8,18 @@ import Login from '../components/auth/v-login'
 import Logup from '../components/auth/v-logup'
 import Profile from '../components/user/v-profile'
 import AddressBook from '../components/user/v-addressBook'
-import Password from  '../components/user/v-password'
+import Password from '../components/user/v-password'
 import CartList from '../components/user/v-cartList'
 import Checkout from '../components/order/v-checkout'
 import OrderList from '../components/order/v-orderList'
 import OrderDetail from '../components/order/v-orderDetail'
-import PayForOrder from '../components/order/v-pay'
+
+import store from '../store/index'
 
 Vue.use(Router)
 Vue.use(Vuex)
 
-const router =  new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -28,7 +29,7 @@ const router =  new Router({
     {
       path: '/product/:typeName',
       name: 'viewByType',
-      component: ProductList,
+      component: ProductList
     },
     {
       path: '/product/p/:productNum',
@@ -101,12 +102,17 @@ const router =  new Router({
         requireAuth: true
       }
     }
-  ],
+  ]
 })
 
-router.beforeEach(function (to,from,next) {
-  if(to.meta.requireAuth === true && to.path !== '/login' && to.path !== '/logup' && sessionStorage.getItem('access_token') == null) {
-    return next('/login')
+router.beforeEach(function (to, from, next) {
+  if (to.meta.requireAuth === true && to.path !== '/login' && to.path !== '/logup' && store.getters.loginState === false) {
+    return next({
+      path: '/login',
+      query: {
+        redirect: to.fullPath
+      }
+    })
   }
   next()
 })

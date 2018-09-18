@@ -26,7 +26,8 @@
 </template>
 
 <script>
-  import VFoot from "../common/v-foot";
+  import VFoot from "../common/v-foot"
+  import {mapMutations} from 'vuex' 
 
   export default {
     name: "v-login",
@@ -47,6 +48,7 @@
       }
     },
     methods: {
+      ...mapMutations(['updateLoginState']),
       login() {
         // 准备数据
         let options = {
@@ -63,7 +65,7 @@
             sessionStorage.setItem('access_token', response.data.data)
             sessionStorage.setItem('username', this.userRegistry.username)
             // 保存用户名和token到vuex
-            this.$store.commit('updateLoginState', {
+            this.updateLoginState({
               username: this.userRegistry.username,
               token: response.data.data
             })
