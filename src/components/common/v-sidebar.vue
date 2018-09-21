@@ -79,16 +79,13 @@
     },
     methods: {
       view(src) {
-        Bus.$emit('clear-keyword');
         this.$router.push(src)
       }
     },
     mounted() {
-      let me = this;
-      Bus.$on('toggle-sidebar', function () {
-        me.drawer = !me.drawer
+      Bus.$on('toggle-sidebar', () => {
+        this.drawer = !this.drawer
       })
-      // this.drawer = this.$store.getters.sideBarStatus
     }
   }
 </script>

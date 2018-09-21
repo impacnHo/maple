@@ -18,15 +18,12 @@ export const updateCartList = (state, cartList) => {
   state.cartList = cartList
 }
 
-// 修改个人信息
-export const updateProfile = (state, profile) => {
-  state.profile = profile
+export const updateOrderRule = (state, id) => {
+  for (let i = 0; i < state.orderRule.length; i++) {
+    if (state.orderRule[i].id === id) {
+      state.orderRule[i].selected = true
+    } else {
+      state.orderRule[i].selected = false
+    }
+  }
 }
-
-// 更改侧导航栏的状态
-// export const sideBarStatus = state => {
-//   console.log('mutations: toggle，当前状态：' + state.sideBar)
-//   state.sideBar = !state.sideBar
-
-//   console.log('最终状态：' + state.sideBar)
-// }

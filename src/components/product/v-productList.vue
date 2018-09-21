@@ -4,13 +4,17 @@
     <v-header></v-header>
     <v-content class="bg">
       <v-container grid-list-lg text-center>
-        <v-layout row wrap v-if="this.list.length>0">
+        <v-layout row wrap>
+          <v-spacer></v-spacer>
+          <v-sort></v-sort>
+        </v-layout>
+        <v-layout row wrap v-if="this.listSize>0">
           <v-product-card class="my-2" v-for="item in list" :key="item.productNum" v-bind="item"></v-product-card>
         </v-layout>
         <v-layout row wrap v-else>
           <v-not-found></v-not-found>
         </v-layout>
-        <v-pager :total="totalPages" :current="currentPage" @goPage="goPage"></v-pager>
+        <v-pager v-if="this.listSize>0" :total="totalPages" :current="currentPage" @goPage="goPage"></v-pager>
       </v-container>
     </v-content>
     <v-foot></v-foot>
@@ -24,11 +28,12 @@
   import vProductCard from './v-productCard'
   import vPager from '../common/v-pager'
   import vNotFound from '../common/v-notFound'
-import { mapState } from 'vuex';
+  import vSort from '../common/v-sort'
+  import { mapState, mapGetters } from 'vuex';
 
   export default {
     name: "v-productList",
-    components: {vHeader, vSidebar, vFoot, vProductCard, vPager, vNotFound},
+    components: {vHeader, vSidebar, vFoot, vProductCard, vPager, vNotFound, vSort},
     data() {
       return {
         // 浏览方式api、数据列表、当前页数、总页数
@@ -38,7 +43,11 @@ import { mapState } from 'vuex';
       }
     },
     computed: {
-      ...mapState(['keyword'])
+      ...mapState(['keyword']),
+      ...mapGetters(['getCurrentOrderRule']),
+      listSize() {
+        return this.list.length
+      }
     },
     methods: {
       getData(pageIndex) {
@@ -63,7 +72,9 @@ import { mapState } from 'vuex';
         // 发送请求
         this.$axios.get(api, {
           params: {
-            page: pageIndex
+            page: pageIndex,
+            orderBy: this.getCurrentOrderRule[0].orderBy,
+            sort: this.getCurrentOrderRule[0].sort
           }
         }).then((response) => {
           if (response.data.data.length > 0) {
@@ -83,6 +94,9 @@ import { mapState } from 'vuex';
     watch: {
       // 路由变化时，初始当前页为1
       '$route'(to, from) {
+        this.getData(1)
+      },
+      getCurrentOrderRule: function() {
         this.getData(1)
       }
     },

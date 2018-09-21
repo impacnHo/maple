@@ -18,7 +18,7 @@
               </v-btn>
               <v-divider></v-divider>
               <v-list three-line v-if="items.length > 0">
-                <v-list-tile v-for="item in items" :key="item.id" avatar @click="">
+                <v-list-tile v-for="item in items" :key="item.id" avatar @click="doNothing">
                   <v-list-tile-avatar>
                     <v-icon class="grey lighten-1 white--text">local_shipping</v-icon>
                   </v-list-tile-avatar>
@@ -67,6 +67,9 @@
       }
     },
     methods: {
+      doNothing() {
+
+      },
       toggle() {
         this.edit = !this.edit
       },

@@ -61,14 +61,11 @@
         // 在vuex中删除
         this.updateLoginState(null)
         this.updateCartList(null)
-        this.updateProfile(null)
         this.$router.push('/login')
       },
       toggle() {
         // 切换sideBar状态
         Bus.$emit('toggle-sidebar');
-        // console.log('点击切换')
-        // this.$store.dispatch('toggleSideBarStatus')
       },
       search() {
         this.$router.push({
@@ -86,11 +83,6 @@
           token: sessionStorage.getItem('access_token')
         })
       }
-    },
-    mounted() {
-      Bus.$on('clear-keyword', () => {
-        this.keyword = ''
-      })
     }
   }
 </script>

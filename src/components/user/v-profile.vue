@@ -96,29 +96,24 @@
     },
     methods: {
       getData() {
-        if(this.$store.state.profile === null) {
-          // 准备数据
-          const options = {
-            method: 'GET',
-            headers: {'access_token': sessionStorage.getItem('access_token')},
-            url: this.$axios.defaults.baseURL + '/userInfo/'
-          }
-
-          // 发送数据
-          this.$axios(options).then(response => {
-            this.profile = response.data.data
-            // 数据转换
-            this.profile.sex = this.getSex(this.profile.sex)
-            this.profile.birth = this.getDate(this.profile.birth)
-            // 存入vuex
-            this.$store.commit('updateProfile', this.profile)
-          }).catch(error => {
-            console.log(error)
-          })
-        } else {
-          this.profile = this.$store.state.profile
+        // 准备数据
+        const options = {
+          method: 'GET',
+          headers: {'access_token': sessionStorage.getItem('access_token')},
+          url: this.$axios.defaults.baseURL + '/userInfo/'
         }
-        
+
+        // 发送数据
+        this.$axios(options).then(response => {
+          this.profile = response.data.data
+          // 数据转换
+          this.profile.sex = this.getSex(this.profile.sex)
+          this.profile.birth = this.getDate(this.profile.birth)
+          // 存入vuex
+          this.$store.commit('updateProfile', this.profile)
+        }).catch(error => {
+          console.log(error)
+         })
       },
       getSex(flag) {
         if (typeof flag === "boolean") {

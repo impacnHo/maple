@@ -77,6 +77,7 @@
   import vFoot from '../common/v-foot'
   import vSidebar from '../common/v-sidebar'
   import qs from 'qs'
+  import {mapState, mapMutations} from 'vuex'
 
   export default {
     name: "v-checkOut",
@@ -90,32 +91,31 @@
       }
     },
     methods: {
+      ...mapMutations(['updateCartList']),
       getData() {
         this.cartIds = this.$route.query.carts
         this.getConsignee()
         this.getCart()
       },
       getConsignee() {
-        let me = this
         const options = {
           method: 'GET',
           headers: {'access_token': sessionStorage.getItem('access_token')},
           url: this.$axios.defaults.baseURL + '/userConsignee/'
         }
 
-        this.$axios(options).then(function (response) {
+        this.$axios(options).then(response => {
           if (response.data.code === 200) {
-            me.consignees = response.data.data
+            this.consignees = response.data.data
           } else {
             console.log('认证失败')
             me.$router.push('/login')
           }
-        }).catch(function (error) {
+        }).catch(error => {
           console.log(error)
         })
       },
       getCart() {
-        let me = this
         let allCart = []
         const options = {
           method: 'GET',
@@ -123,25 +123,25 @@
           url: this.$axios.defaults.baseURL + '/cart/'
         }
 
-        this.$axios(options).then(function (response) {
+        this.$axios(options).then(response => {
           if (response.data.code === 200) {
             allCart = response.data.data
             // 筛选
-            if (allCart.length !== me.cartIds.length) {
+            if (allCart.length !== this.cartIds.length) {
               for (let i = 0; i < allCart.length; i++) {
-                for (let j = 0; j < me.cartIds.length; j++) {
-                  if (me.cartIds[j] !== allCart[i].id) {
+                for (let j = 0; j < this.cartIds.length; j++) {
+                  if (this.cartIds[j] !== allCart[i].id) {
                     allCart.splice(i, 1)
                   }
                 }
               }
             }
-            me.carts = allCart
+            this.carts = allCart
           } else {
             alert('认证失败')
             me.$router.push('/login')
           }
-        }).catch(function (error) {
+        }).catch(error => {
           console.log(error)
         })
       },
@@ -170,15 +170,23 @@
         }
 
         // 发送请求
-        let me = this
-        this.$axios(options).then(function (response) {
+        this.$axios(options).then(response => {
           if (response.data.code === 200) {
-            alert('订单创建成功，id为' + response.data.data)
+            // 删除vuex中的购物车项目
+            let cartList = this.$store.state.cartList
+            for(let i = 0;i < cartList.length;i++) {
+              for(let j = 0;j < this.cartIds.length;j++) {
+                if(cartIds[j] === cartList[i].id) {
+                  cartList.splice(i, 1)
+                }
+              }
+            }
+            this.updateCartList(cartList)
+            this.$router.push('/order/' + response.data.data)
           } else {
             console.log('认证失败')
-            me.$router.push('/login')
           }
-        }).catch(function (error) {
+        }).catch(error => {
           console.log(error)
         })
       }

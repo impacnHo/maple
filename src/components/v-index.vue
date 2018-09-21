@@ -65,7 +65,7 @@
             poster: 'http://pbw790ert.bkt.clouddn.com/subBanner5.jpg',
             slogen: 'CASIO',
             type: '配饰',
-            to: '/product/accessories'
+            to: '/product/accessory'
           },
           {
             index: 7,
