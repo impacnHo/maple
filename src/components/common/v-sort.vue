@@ -1,6 +1,6 @@
 <template>
     <v-menu offset-y bottom origin="center center" transition="scale-transition">
-      <v-btn slot="activator" color="blue darken-2" dark round>
+      <v-btn slot="activator" color="blue darken-2" dark round outline>
         <v-icon>{{this.getCurrentOrderRule[0].icon}}</v-icon>{{this.getCurrentOrderRule[0].name}}
       </v-btn>
       <v-list>
@@ -23,7 +23,6 @@ export default {
     }
 }
 </script>
-<style>
-
+<style scoped>
 </style>
 

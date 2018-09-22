@@ -1,22 +1,39 @@
 <template>
   <v-toolbar color="blue darken-3" dark fixed app>
     <v-toolbar-side-icon @click="toggle"></v-toolbar-side-icon>
-    <router-link to="/">
+    <!-- <router-link to="/">
       <v-avatar size="24" class="ml-1 mr-2">
         <img src="../../assets/avatar.jpg" alt="avatar.jpg">
       </v-avatar>
-    </router-link>
-    <v-toolbar-title class="hidden-sm-and-down">Trophy Room</v-toolbar-title>
+    </router-link> -->
+    <v-toolbar-title class="index" @click="go('/')">Maple</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-flex>
-      <v-text-field @keyup.enter="search" class="mt-4" v-model="keyword" color="white" label="搜索商品" prepend-icon="search" clearable></v-text-field>
+    <v-flex hidden-xs-only>
+      <v-text-field @keyup.enter="search()" class="mt-2" v-model="keyword" color="white" label="搜索商品" prepend-icon="search" clearable></v-text-field>
     </v-flex>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat @click="go('/order')">
+      <!-- <v-btn flat @click="go('/order')">
+        <v-icon>account_circle</v-icon>
+        <span class="ml-2 hidden-sm-and-down">{{username}}</span>
+      </v-btn> -->
+      <!---->
+      <v-menu offset-y bottom open-on-hover origin="center center" transition="scale-transition">
+      <v-btn slot="activator" flat @click="go('/order/')">
         <v-icon>account_circle</v-icon>
         <span class="ml-2 hidden-sm-and-down">{{username}}</span>
       </v-btn>
+      <v-list v-if="loginState">
+        <v-list-tile @click="logout">
+          <v-list-tile-title>
+            <span align-center class="list-item">
+              <i class="fas fa-power-off"></i>&nbsp;&nbsp;退出
+            </span>
+          </v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-menu>
+      <!---->
       <v-btn flat @click="go('/user/cart')">
         <v-badge color="red darken-2">
           <span slot="badge" v-if="cartListSize>0">{{cartListSize}}</span>
@@ -24,9 +41,9 @@
           <v-icon>shopping_cart</v-icon>
         </v-badge>
       </v-btn>
-      <v-btn flat @click="logout">
+      <!-- <v-btn flat @click="logout">
         <v-icon>power_settings_new</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-toolbar-items>
   </v-toolbar>
 </template>
@@ -88,4 +105,11 @@
 </script>
 
 <style scoped>
+  .index:hover {
+    cursor: pointer;
+  }
+
+  .list-item:hover {
+    color: #1565C0;
+  }
 </style>

@@ -8,6 +8,7 @@
           <v-spacer></v-spacer>
           <v-sort></v-sort>
         </v-layout>
+        <v-back-top></v-back-top>
         <v-layout row wrap v-if="this.listSize>0">
           <v-product-card class="my-2" v-for="item in list" :key="item.productNum" v-bind="item"></v-product-card>
         </v-layout>
@@ -29,11 +30,12 @@
   import vPager from '../common/v-pager'
   import vNotFound from '../common/v-notFound'
   import vSort from '../common/v-sort'
+  import vBackTop from '../common/v-backTop.vue'
   import { mapState, mapGetters } from 'vuex';
 
   export default {
     name: "v-productList",
-    components: {vHeader, vSidebar, vFoot, vProductCard, vPager, vNotFound, vSort},
+    components: {vHeader, vSidebar, vFoot, vProductCard, vPager, vNotFound, vSort, vBackTop},
     data() {
       return {
         // 浏览方式api、数据列表、当前页数、总页数

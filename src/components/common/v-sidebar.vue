@@ -1,6 +1,14 @@
 <template>
   <v-navigation-drawer v-model="drawer" app fixed>
     <v-list>
+      <v-layout mb-2 hidden-sm-and-up>
+        <v-flex ml-2>
+          <v-text-field @keyup.enter="search()" prepend-inner-icon="search" label="搜索商品" v-model="keyword" single-line></v-text-field>
+        </v-flex>
+        <v-flex>
+          <v-btn color="blue darken-3" dark @click="search()">搜索</v-btn>
+        </v-flex>
+      </v-layout>
       <v-list-group v-for="item in items" v-model="item.active" :key="item.title">
         <v-list-tile slot="activator">
           <v-list-tile-content>
@@ -30,6 +38,7 @@
     name: "v-sidebar",
     data() {
       return {
+        keyword: this.$route.query.keyword,
         drawer: false,
         items: [
           {
@@ -80,6 +89,14 @@
     methods: {
       view(src) {
         this.$router.push(src)
+      },
+      search() {
+        this.$router.push({
+          path: '/product/search',
+          query: {
+            keyword: this.keyword
+          }
+        })
       }
     },
     mounted() {
