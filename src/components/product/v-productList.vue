@@ -46,7 +46,7 @@
     },
     computed: {
       ...mapState(['keyword']),
-      ...mapGetters(['getCurrentOrderRule']),
+      ...mapGetters(['getCurrentProductSortRule']),
       listSize() {
         return this.list.length
       }
@@ -75,8 +75,8 @@
         this.$axios.get(api, {
           params: {
             page: pageIndex,
-            orderBy: this.getCurrentOrderRule[0].orderBy,
-            sort: this.getCurrentOrderRule[0].sort
+            orderBy: this.getCurrentProductSortRule[0].orderBy,
+            sort: this.getCurrentProductSortRule[0].sort
           }
         }).then((response) => {
           if (response.data.data.length > 0) {
@@ -98,7 +98,7 @@
       '$route'(to, from) {
         this.getData(1)
       },
-      getCurrentOrderRule: function() {
+      getCurrentProductSortRule: function() {
         this.getData(1)
       }
     },

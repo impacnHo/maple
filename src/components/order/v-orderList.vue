@@ -8,19 +8,26 @@
           <v-card>
             <v-container>
               <h3>我的订单</h3>
-              <v-divider></v-divider>
+              <!---->
               <v-container text-center>
-                <v-container mb-5 v-for="item in items" :key="item.id" class="order">
-                  <v-layout row wrap align-center class="order" style="background-color: whitesmoke;border: none;">
-                    <v-flex lg6 text-left>
-                      <h5>订单号：<span class="font-weight-bold">#{{item.id}}</span></h5>
-                    </v-flex>
-                    <v-flex lg6 text-right>
-                      <h6>创建时间：<span class="font-weight-bold">{{getTime(item.createTime)}}</span></h6>
-                    </v-flex>
-                  </v-layout>
-                  <v-divider></v-divider>
-                  <v-layout align-center>
+                <v-divider></v-divider>
+                <v-tabs v-model="active" color="white" light slider-color="blue darken-3">
+                  <v-tab v-for="item in orderViewRule" :key="item.id" ripple @click="updateOrderViewRule(item.id)">
+                    &nbsp;&nbsp;{{item.name}}&nbsp;&nbsp;
+                  </v-tab>
+                </v-tabs>
+                <div v-if="getItemSize > 0" class="mt-3">
+                  <v-container mb-5 v-for="item in items" :key="item.id" class="order">
+                    <v-layout row wrap align-center class="order" style="background-color: whitesmoke;border: none;">
+                      <v-flex lg6 text-left>
+                        <h5>订单号：<span class="font-weight-bold">#{{item.id}}</span></h5>
+                      </v-flex>
+                      <v-flex lg6 text-right>
+                        <h6>创建时间：<span class="font-weight-bold">{{getTime(item.createTime)}}</span></h6>
+                      </v-flex>
+                    </v-layout>
+                    <v-divider></v-divider>
+                    <v-layout align-center>
                     <v-flex lg9 class="right">
                       <v-container>
                         <v-layout v-for="(subItem,index) in item.orderItems" :key="item.id + '-' +index">
@@ -57,14 +64,19 @@
                       <v-pay v-on:flash="getData(currentPage)" v-if="item.status === 0" v-bind:id="item.id"
                              v-bind:total="item.total"></v-pay>
                     </v-flex>
-                  </v-layout>
-                </v-container>
+                   </v-layout>
+                  </v-container>
+                </div>
+                <div v-else class="mt-3">
+                  <v-no-data></v-no-data>
+                </div>
               </v-container>
+              <!---->
             </v-container>
           </v-card>
         </v-container>
       </v-container>
-      <v-pager :total="totalPages" :current="currentPage" @goPage="goPage"></v-pager>
+      <v-pager v-if="getItemSize > 0" :total="totalPages" :current="currentPage" @goPage="goPage"></v-pager>
     </v-content>
     <v-foot></v-foot>
   </v-app>
@@ -76,19 +88,30 @@
   import vSidebar from '../common/v-sidebar'
   import vPager from '../common/v-pager'
   import vPay from './v-pay'
+  import vNoData from '../common/v-noData.vue'
+  import {mapState, mapMutations, mapGetters} from 'vuex'
 
   export default {
     name: "v-orderList",
-    components: {vHeader, vSidebar, vFoot, vPager, vPay},
+    components: {vHeader, vSidebar, vFoot, vPager, vPay, vNoData},
     data() {
       return {
+        active: -1,
         items: [],
         currentPage: 1,
         totalPages: 1
       }
     },
+    computed: {
+      ...mapState(['orderViewRule']),
+      ...mapGetters(['getCurrentOrderViewRule']),
+      getItemSize() {
+        return this.items.length
+      }
+    },
     methods: {
-      getData(pageIndex) {
+      ...mapMutations(['updateOrderViewRule']),
+      getData(pageIndex, status) {
         let me = this
         this.currentPage = pageIndex
         // 准备请求
@@ -96,7 +119,8 @@
           method: 'GET',
           headers: {'access_token': sessionStorage.getItem('access_token')},
           params: {
-            page: pageIndex
+            page: pageIndex,
+            status: status
           },
           url: this.$axios.defaults.baseURL + '/order/'
         }
@@ -155,8 +179,13 @@
         this.$router.push('/order/pay/' + id)
       }
     },
+    watch: {
+      active: function() {
+        this.getData(1, this.getCurrentOrderViewRule[0].id)
+      }
+    },
     created() {
-      this.getData(1)
+      this.getData(1, -1)
     }
   }
 </script>

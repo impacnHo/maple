@@ -14,13 +14,18 @@ export const getSideBarState = state => {
 }
 
 // 获取当前排序规则
-export const getCurrentOrderRule = state => {
-  return state.orderRule.filter(item => item.selected === true)
+export const getCurrentProductSortRule = state => {
+  return state.productSortRule.filter(item => item.selected === true)
 }
 
 // 获取其他排序规则
-export const getOtherOrderRule = state => {
-  return state.orderRule.filter(item => item.selected === false)
+export const getOtherProductSortRule = state => {
+  return state.productSortRule.filter(item => item.selected === false)
+}
+
+// 获取当前订单查看状态
+export const getCurrentOrderViewRule = state => {
+  return state.orderViewRule.filter(item => item.selected === true)
 }
 
 // 获取当前sideBar开光

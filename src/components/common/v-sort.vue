@@ -1,10 +1,10 @@
 <template>
     <v-menu offset-y bottom origin="center center" transition="scale-transition">
       <v-btn slot="activator" color="blue darken-2" dark round outline>
-        <v-icon>{{this.getCurrentOrderRule[0].icon}}</v-icon>{{this.getCurrentOrderRule[0].name}}
+        <v-icon>{{this.getCurrentProductSortRule[0].icon}}</v-icon>{{this.getCurrentProductSortRule[0].name}}
       </v-btn>
       <v-list>
-        <v-list-tile v-for="item in getOtherOrderRule" :key="item.id" @click="updateOrderRule(item.id)">
+        <v-list-tile v-for="item in getOtherProductSortRule" :key="item.id" @click="updateProductSortRule(item.id)">
           <v-list-tile-title>{{item.name}}</v-list-tile-title>
         </v-list-tile>
       </v-list>
@@ -16,10 +16,10 @@
 
 export default {
     computed: {
-        ...mapGetters(['getCurrentOrderRule','getOtherOrderRule'])
+        ...mapGetters(['getCurrentProductSortRule','getOtherProductSortRule'])
     },
     methods: {
-        ...mapMutations(['updateOrderRule'])
+        ...mapMutations(['updateProductSortRule'])
     }
 }
 </script>
