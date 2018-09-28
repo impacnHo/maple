@@ -33,17 +33,13 @@
         </v-list-tile>
       </v-list>
     </v-menu>
-      <!---->
-      <v-btn flat @click="go('/user/cart')">
-        <v-badge color="red darken-2">
-          <span slot="badge" v-if="cartListSize>0">{{cartListSize}}</span>
-          <span slot="badge" v-else-if="cookieCartSize !== undefined">{{cookieCartSize}}</span>
-          <v-icon>shopping_cart</v-icon>
-        </v-badge>
-      </v-btn>
-      <!-- <v-btn flat @click="logout">
-        <v-icon>power_settings_new</v-icon>
-      </v-btn> -->
+    <v-btn flat @click="go('/user/cart')">
+      <v-badge color="red darken-2">
+        <span slot="badge" v-if="cartListSize>0">{{cartListSize}}</span>
+        <span slot="badge" v-else-if="cookieCartSize !== undefined">{{cookieCartSize}}</span>
+        <v-icon>shopping_cart</v-icon>
+      </v-badge>
+    </v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>

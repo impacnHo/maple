@@ -17,6 +17,26 @@
                       <v-flex lg6 md6 sm12 xs12>
                         订单状态：<span class="font-weight-bold">{{getStatus(item.status)}}</span>
                         <v-pay v-if="item.status === 0" v-bind:id="item.id" v-bind:total="item.total" v-on:flash="getData"></v-pay>
+                        <!---->
+                        <v-dialog v-if="item.status === 0 || item.status === 2" v-model="dialog" width="500px">
+                          <v-btn small color="red darken-2" dark slot="activator">取消订单</v-btn>
+                          <v-card>
+                            <v-card-title class="headline grey lighten-3">取消订单 - #{{item.id}}</v-card-title>
+                            <v-card-text>
+                              <p class="font-weight-bold">
+                                当前订单状态为【{{getStatus(item.status)}}】，请确认是否取消订单？
+                              </p>
+                            </v-card-text>
+                            <v-divider></v-divider>
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn flat @click="cancelOrder(item.id)">确认</v-btn>
+                              <v-btn flat color="blue darken-3" @click="dialog = false">取消</v-btn>
+                            </v-card-actions>
+                            <v-progress-linear v-if="progress" :indeterminate="true"></v-progress-linear>
+                          </v-card>
+                        </v-dialog>
+                        <!---->
                       </v-flex>
                       <v-flex lg6 md6 sm12 xs12>
                         创建时间：<span class="font-weight-bold">{{getTime(item.createTime)}}</span>
@@ -106,6 +126,8 @@
     components: {vHeader, vSidebar, vFoot, vPay},
     data() {
       return {
+        dialog: false,
+        progress: false,
         item:[]
       }
     },

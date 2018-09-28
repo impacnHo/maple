@@ -106,7 +106,7 @@ const router = new Router({
 })
 
 router.beforeEach(function (to, from, next) {
-  if (to.meta.requireAuth === true && to.path !== '/login' && to.path !== '/logup' && store.getters.loginState === false) {
+  if (to.meta.requireAuth && window.sessionStorage.getItem('access_token') === null) {
     return next({
       path: '/login',
       query: {

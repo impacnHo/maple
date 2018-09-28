@@ -19,7 +19,7 @@
                     </v-radio-group>
                   </v-card-text>
                   <v-card-text v-else>
-                    请先完成收货地址填写
+                    请先完成 <span class="blue--text" style="cursor:pointer;" @click="go('/userConsignee/addressBook')">收货地址填写</span>
                   </v-card-text>
                 </v-card>
               </v-container>
@@ -92,6 +92,9 @@
     },
     methods: {
       ...mapMutations(['updateCartList']),
+      go(name) {
+        this.$router.push(name)
+      },
       getData() {
         this.cartIds = this.$route.query.carts
         this.getConsignee()

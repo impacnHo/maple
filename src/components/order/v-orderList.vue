@@ -48,7 +48,7 @@
                                   </p>
                                 </v-flex>
                                 <v-flex>
-                                  &yen; {{subItem.unitPrice}} &times {{subItem.quanlity}}
+                                  &yen; {{subItem.unitPrice}} &times; {{subItem.quanlity}}
                                 </v-flex>
                               </v-layout>
                             </v-container>
@@ -59,8 +59,29 @@
                     </v-flex>
                     <v-flex lg3>
                       <p class="font-weight-bold">{{getStatus(item.status)}}</p>
-                      <p>&yen; {{item.total}}.00（含配送费用0.00）</p>
-                      <p class="blue--text" @click="goDatail(item.id)" style="cursor: pointer;">查看详情</p>
+                      <p class="font-weight-bold">&yen; {{item.total}}.00（含配送费用0.00）</p>
+                      <p @click="goDatail(item.id)" style="cursor: pointer;">查看详情</p>
+                      <!---->
+                      <v-dialog v-if="item.status === 0 || item.status === 2" v-model="dialog" width="500px">
+                        <v-btn small flat slot="activator">取消订单</v-btn>
+                        <v-card>
+                          <v-card-title class="headline grey lighten-3">取消订单 - #{{item.id}}</v-card-title>
+                          <v-card-text>
+                            <p class="font-weight-bold">
+                              当前订单状态为【{{getStatus(item.status)}}】，请确认是否取消订单？
+                            </p>
+                          </v-card-text>
+                          <v-divider></v-divider>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn flat @click="cancelOrder(item.id)">确认</v-btn>
+                            <v-btn flat color="blue darken-3" @click="dialog = false">取消</v-btn>
+                          </v-card-actions>
+                          <v-progress-linear v-if="progress" :indeterminate="true"></v-progress-linear>
+                        </v-card>
+                      </v-dialog>
+                      <!---->
+                      <br>
                       <v-pay v-on:flash="getData(currentPage)" v-if="item.status === 0" v-bind:id="item.id"
                              v-bind:total="item.total"></v-pay>
                     </v-flex>
@@ -96,6 +117,8 @@
     components: {vHeader, vSidebar, vFoot, vPager, vPay, vNoData},
     data() {
       return {
+        dialog: false,
+        progress: false,
         active: -1,
         items: [],
         currentPage: 1,
@@ -111,9 +134,32 @@
     },
     methods: {
       ...mapMutations(['updateOrderViewRule']),
+      cancelOrder(id) {
+        this.progress = true
+
+        // 准备请求
+        const options = {
+          method: 'DELETE',
+          headers: {'access_token': sessionStorage.getItem('access_token')},
+          url: this.$axios.defaults.baseURL + '/order/' + id
+        }
+
+        // 发送请求
+        this.$axios(options).then(response => {
+          if(response.data.code === 200) {
+            this.progress = false
+            this.dialog = false
+            this.getData(1, -1)
+          } else {
+            alert('认证失败')
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      },
       getData(pageIndex, status) {
-        let me = this
         this.currentPage = pageIndex
+
         // 准备请求
         const options = {
           method: 'GET',
@@ -126,14 +172,15 @@
         }
 
         // 发送请求
-        this.$axios(options).then(function (response) {
+        this.$axios(options).then(response => {
           if (response.data.code === 200) {
-            me.items = response.data.data
-            me.totalPages = parseInt(response.data.message)
+            this.items = response.data.data
+            this.totalPages = parseInt(response.data.message)
           } else {
             console.log('认证失败')
-            me.$router.push('/login')
           }
+        }).catch(error => {
+          console.log(error)
         })
       },
       getStatus(code) {
